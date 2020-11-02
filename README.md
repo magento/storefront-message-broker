@@ -11,4 +11,4 @@ This repository is responsible for Message Broker
 Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for more information.
 
 ### Licensing
-This project is licensed under the Apache V2 License. See [LICENSE](./LICENSE.md) for more information.
+This project is licensed under the OSL-3.0 License. See [LICENSE](./LICENSE.md) for more information.
