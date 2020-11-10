@@ -16,11 +16,7 @@
 -->
 
 ### Related Pull Requests
-
 <!-- related pull request placeholder -->
-<!--- ^ DO NOT REMOVE placeholder above ^ -->
-
-
 
 ### Fixed Issues (if relevant)
 <!---
@@ -38,8 +34,23 @@
 
 ### Code Review Checklist (*)
 
+See detailed [checklist](https://github.com/magento/catalog-storefront/blob/develop/dev/docs/projectAgreements/Code-Review-checklist.md)
 
 - [ ] Story AC is completed
 - [ ] proposed changes correspond to [Magento Technical Vision](https://devdocs.magento.com/guides/v2.2/coding-standards/technical-guidelines.html)
 - [ ] new or changed code is covered with web-api/integration tests (if applicable)
+  - expected results in test verified with data from fixture
 - [ ] no backward incompatible changes
+- [ ] Export API (et_schema.xml) and SF API schemas (proto schema) are reflected in the codebase
+  - prerequisite: story branch created with all needed generated classes according to proposes schema-changes
+  - DTO classes do not contain any manual changes (Magento\CatalogExportApi\*, Magento\CatalogStorefrontApi\*)
+- [ ] Class usage: magento/catalog-storefront repo don't use directly classes from magento/saas-export repo and vise-verse
+  - Check composer.json dependencies
+- [ ] Legacy code is deleted
+  - Any Data Providers present in Connector part  (Magento\CatalogStorefrontConnector, Magento\*Extractor modules)
+  - And Data Providers from Export API (magento/saas-export repo) that is not relevant anymore
+  - Any DTO for Export API/SF API which does not reflect current schema: et_schema, proto schema
+  - Any “mapper” on Message Broker (between Export API and SF API)
+    - if mapper still needed, verify fields used in mapping, remove not relevant fields
+
+
