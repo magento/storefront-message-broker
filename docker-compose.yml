@@ -16,35 +16,6 @@ services:
     command: sh install_message_broker.sh
     x-setup:
     x-info: https://devdocs.magento.com/
-  rabbit:
-    image: rabbitmq:management
-    hostname: rabbitmq
-    networks:
-      default:
-    ports:
-      - 15672:15672
-      - 5672:5672
-    x-hints:
-      - bin/magento queue:consumers:list
-      - bin/magento queue:consumers:start
-      - "http://localhost:15672/ user:guest pass:guest"
-    x-setup:
-    x-info: https://devdocs.magento.com/guides/v2.3/config-guide/mq/manage-message-queues.html
-  elastic:
-    image: elasticsearch:6.8.9
-    hostname: elastic
-    ports:
-      - 9200:9200
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    x-info: https://devdocs.magento.com/guides/v2.3/config-guide/elasticsearch/es-overview.html
 networks:
   default:
     driver: bridge

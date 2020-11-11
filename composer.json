@@ -41,11 +41,6 @@
     "laminas/laminas-uri": "^2.5.1",
     "laminas/laminas-validator": "^2.6.0",
     "laminas/laminas-view": "~2.11.2",
-    "colinmollenhour/cache-backend-file": "^1.4",
-    "colinmollenhour/cache-backend-redis": "^1.14",
-    "colinmollenhour/credis": "1.11.1",
-    "colinmollenhour/php-redis-session-abstract": "^1.4",
-    "elasticsearch/elasticsearch": "^7.9",
     "magento/module-amqp": "*",
     "magento/module-message-queue": "*"
   },

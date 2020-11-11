@@ -1,6 +1,0 @@
-Magento/CatalogStorefront/Model/Storage/Client/Config
-Magento/CatalogStorefront/Model/Logging
-Magento/CatalogExtractor/DataProvider/Query/
-Magento/CatalogStorefrontApi/Api
-Magento/CatalogStorefrontApi/Proto
-Magento/CatalogExportApi/Api/Data
