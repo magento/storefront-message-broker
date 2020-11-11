@@ -14,13 +14,7 @@ class Installer
     const AMQP_PORT = 'port';
     const AMQP_USER = 'user';
     const AMQP_PASSWORD = 'password';
-    /**
-     * Configuration for Elasticsea
-     */
-    const ELASTICSEARCH_HOST = 'elasticsearch_server_hostname';
-    const ELASTICSEARCH_ENGINE = 'engine';
-    const ELASTICSEARCH_PORT = 'elasticsearch_server_port';
-    const ELASTICSEARCH_INDEX_PREFIX = 'elasticsearch_index_prefix';
+
     /**
      * Other settings
      */
@@ -99,23 +93,13 @@ class Installer
                         ]
                     ]
                 ],
-                'catalog-store-front' => [
-                    'connections' => [
-                        'default' => [
-                            'protocol' => 'http',
-                            'hostname' => $parameters[self::ELASTICSEARCH_HOST],
-                            'port' => $parameters[self::ELASTICSEARCH_PORT],
-                            'username' => '',
-                            'password' => '',
-                            'timeout' => 3
-                        ]
-                    ]
-                ],
                 'install' => [
                     'date' => $this->dateTime->formatDate(true)
                 ]
             ],
-            'app_config' => $this->modulesCollector->execute()
+            'app_config' => [
+                'modules' => $this->modulesCollector->execute()
+            ]
         ];
 
         $this->deploymentConfigWriter->saveConfig($config);

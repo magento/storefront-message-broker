@@ -22,6 +22,13 @@ try {
     /** @var \Magento\Framework\Console\CommandListInterface $commandsList */
     $commandsList = $om->get(\Magento\Framework\Console\CommandListInterface::class);
     $commands = $commandsList->getCommands();
+
+    foreach (\Magento\Framework\Console\CommandLocator::getCommands() as $commandListClass) {
+        /** @var \Magento\Framework\Console\CommandListInterface $commandListCustom */
+        $commandListCustom = $om->get($commandListClass);
+        $commands += $commandListCustom->getCommands();
+    }
+
     $application = new \Symfony\Component\Console\Application('Magento CLI');
     $application->addCommands($commands);
     $application->run();

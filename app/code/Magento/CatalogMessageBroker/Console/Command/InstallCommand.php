@@ -25,10 +25,6 @@ class InstallCommand extends  Command
     const AMQP_PORT = 'amqp-port';
     const AMQP_USER = 'amqp-user';
     const AMQP_PASSWORD = 'amqp-password';
-    /**
-     * Configuration for Elasticsea
-     */
-    const ELASTICSEARCH_ENGINE = 'elasticsearch-engine';
 
     /**
      * @var Installer
@@ -94,30 +90,6 @@ class InstallCommand extends  Command
                 'AMQP user'
             ),
             new InputOption(
-                self::ELASTICSEARCH_ENGINE,
-                null,
-                $mode,
-                'Elasticsearch engine'
-            ),
-            new InputOption(
-                Installer::ELASTICSEARCH_HOST,
-                null,
-                $mode,
-                'Elasticsearch host'
-            ),
-            new InputOption(
-                Installer::ELASTICSEARCH_INDEX_PREFIX,
-                null,
-                $mode,
-                'Elasticsearch index prefix'
-            ),
-            new InputOption(
-                Installer::ELASTICSEARCH_PORT,
-                null,
-                $mode,
-                'Elasticsearch port'
-            ),
-            new InputOption(
                 Installer::BASE_URL,
                 null,
                 $mode,
@@ -134,7 +106,6 @@ class InstallCommand extends  Command
      */
     private function mapOptions(array $options): array
     {
-        $options[Installer::ELASTICSEARCH_ENGINE] = $options[self::ELASTICSEARCH_ENGINE];
         $options[Installer::AMQP_PORT] = $options[self::AMQP_PORT];
         $options[Installer::AMQP_HOST] = $options[self::AMQP_HOST];
         $options[Installer::AMQP_USER] = $options[self::AMQP_USER];
