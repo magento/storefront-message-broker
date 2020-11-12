@@ -19,6 +19,9 @@ class CustomAttributesDefaultTypeLocator implements CustomAttributeTypeLocatorIn
      */
     public function getType($attributeCode, $entityType)
     {
+        echo (new \Exception())->getTraceAsString();
+        echo __METHOD__, "\n\n";
+
         return TypeProcessor::NORMALIZED_ANY_TYPE;
     }
 
@@ -27,6 +30,9 @@ class CustomAttributesDefaultTypeLocator implements CustomAttributeTypeLocatorIn
      */
     public function getAllServiceDataInterfaces()
     {
+        echo (new \Exception())->getTraceAsString();
+        echo __METHOD__, "\n\n";
+
         return [];
     }
 }

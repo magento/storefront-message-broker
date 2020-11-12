@@ -11,8 +11,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Client for invoking REST API
- * TODO: ad-hoc solution. replace with some ready-to-use library
- * What for to replace with already existing library? There are a lot of custom logic here?
  */
 class RestClient
 {
@@ -101,7 +99,20 @@ class RestClient
      */
     private function constructResourceUrl($resourcePath): string
     {
-        $storefrontAppHost = $this->deploymentConfig->get(self::BACKOFFICE_URL_WEB_PATH);
+        $storefrontAppHost = $this->deploymentConfig->get(
+            self::BACKOFFICE_URL_WEB_PATH,
+            $this->resolveDefaultMagentoUrl()
+        );
         return rtrim($storefrontAppHost, '/') . $this->restBasePath . ltrim($resourcePath, '/');
+    }
+
+    /**
+     * For Monolithic installation return default url from phpunit_rest.xml const if present of return "localhost"
+     *
+     * @return string
+     */
+    private function resolveDefaultMagentoUrl()
+    {
+        return defined('TESTS_BASE_URL') ? TESTS_BASE_URL : 'localhost';
     }
 }

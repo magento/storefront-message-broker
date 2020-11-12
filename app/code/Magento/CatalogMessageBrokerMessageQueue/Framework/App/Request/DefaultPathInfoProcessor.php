@@ -24,6 +24,9 @@ class DefaultPathInfoProcessor implements PathInfoProcessorInterface
      */
     public function process(\Magento\Framework\App\RequestInterface $request, $pathInfo)
     {
+        echo (new \Exception())->getTraceAsString();
+        echo __METHOD__, "\n\n";
+
         return $pathInfo;
     }
 }

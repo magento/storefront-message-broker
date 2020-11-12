@@ -20,6 +20,9 @@ class Encoder implements EncoderInterface
      */
     public function encode($data)
     {
+        echo (new \Exception())->getTraceAsString();
+        echo __METHOD__, "\n\n";
+
         return \Zend_Json::encode($data);
     }
 }
