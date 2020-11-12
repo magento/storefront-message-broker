@@ -50,4 +50,8 @@
             <argument name="batchSize" xsi:type="number">500</argument>
         </arguments>
     </type>
+
+    <!-- Override classes to support standalone installation of Message Broker    -->
+    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Model\Amqp\ResourceModel\MessageQueueLock" />
+
 </config>
