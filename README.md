@@ -24,11 +24,16 @@ Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for
 ### Licensing
 This project is licensed under the OSL-3.0 License. See [LICENSE](./LICENSE.md) for more information.
 
-### Project Installation
-In case if you want to install this application as a monolith, please be aware that `app/etc/di.xml` should not be copied.
+### Monolith Project Installation
+1. Copy all files from different repos to magento2ce. You need to copy (commerce-data-export, catalog-storefront, message-broker)
+2. Please be aware that `app/etc/di.xml` should not be copied.
+3. Follow normal Magento installation
 
-In order to install project run ```composer install``` command.
-Than run ```bin/magento microservice:install ``` with all required arguments.
+
+### Standalone Project Installation
+1. In order to install project run ```composer install``` command.
+2. Than run ```bin/magento microservice:install ``` with all required arguments.
+
 
 ### Stubs
 In order to make magento framework work with Magento modules, there were created few stubs
