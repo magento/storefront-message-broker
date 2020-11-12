@@ -27,6 +27,18 @@ In case if you want to install this application as a monolith, please be aware t
 In order to install project run ```composer install``` command.
 Than run ```bin/magento microservice:install ``` with all required arguments.
 
+### Stubs
+In order to make magento framework work with Magento modules, there were created few stubs
+and add few preferences:
+
+`\Magento\CatalogMessageBrokerMessageQueue\Stub\CustomAttributesDefaultTypeLocator`
+On bootstrap Magento tries to load all dependencies, that are required for WebAPI. One of such depdendency is CustomAttributesDefaultTypeLocator.
+`\Magento\CatalogMessageBrokerMessageQueue\Stub\Json\Encoder`
+Magento framework tries not only to encode, but also to translate JSON. We dont need this functionality.
+`\Magento\CatalogMessageBrokerMessageQueue\Stub\App\Request\DefaultPathInfoProcessor`
+On Bootstrap Magento need to resolve default path. As we dont need default path, we created stub.
+`\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock`
+Message queue lock mechanism is utilizing Magento database, in order to get rid of database, we need to get rid of MessageQueueLock
 
 # SF APP Project Documents
 * [Project Overview:](https://github.com/magento/catalog-storefront/blob/develop/dev/docs/home/Home.md)

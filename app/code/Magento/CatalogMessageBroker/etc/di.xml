@@ -7,6 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\CatalogMessageBroker\Model\FetchProductsInterface" type="Magento\CatalogMessageBroker\Model\FetchProducts"/>
+    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
     <preference for="Magento\CatalogMessageBroker\Model\FetchCategoriesInterface" type="Magento\CatalogMessageBroker\Model\FetchCategories"/>
     <preference for="Magento\CatalogMessageBroker\Model\MessageBus\Data\ChangedEntitiesInterface" type="Magento\CatalogMessageBroker\Model\MessageBus\Data\ChangedEntities" />
     <preference for="Magento\CatalogMessageBroker\Model\MessageBus\Data\DataInterface" type="Magento\CatalogMessageBroker\Model\MessageBus\Data\Data" />

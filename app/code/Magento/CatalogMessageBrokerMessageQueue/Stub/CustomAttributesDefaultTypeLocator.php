@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Magento\CatalogMessageBrokerMessageQueue\Framework;
+namespace Magento\CatalogMessageBrokerMessageQueue\Stub;
 
 use Magento\Framework\Reflection\TypeProcessor;
 use Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface;

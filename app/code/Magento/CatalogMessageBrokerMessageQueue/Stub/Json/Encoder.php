@@ -3,7 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\CatalogMessageBrokerMessageQueue\Framework\Json;
+namespace Magento\CatalogMessageBrokerMessageQueue\Stub\Json;
 
 use Magento\Framework\Json\EncoderInterface;
 
