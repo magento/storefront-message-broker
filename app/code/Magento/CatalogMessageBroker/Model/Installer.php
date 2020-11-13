@@ -21,6 +21,16 @@ class Installer
     const BASE_URL = 'backoffice-base-url';
 
     /**
+     * gRPC configuration client hostname.
+     */
+    public const GRPC_HOSTNAME = 'grpc-hostname';
+
+    /**
+     * gRPC configuration client port.
+     */
+    public const GRPC_PORT = 'grpc-port';
+
+    /**
      * @var Writer
      */
     private $deploymentConfigWriter;
@@ -90,8 +100,14 @@ class Installer
                             'web' => [
                                 'base_url' => $parameters[self::BASE_URL]
                             ]
-                        ]
-                    ]
+                        ],
+                        'grpc_client' => [
+                            'connection' => [
+                                'hostname' => $parameters[self::GRPC_HOSTNAME],
+                                'port' => $parameters[self::GRPC_PORT],
+                            ],
+                        ],
+                    ],
                 ],
                 'install' => [
                     'date' => $this->dateTime->formatDate(true)

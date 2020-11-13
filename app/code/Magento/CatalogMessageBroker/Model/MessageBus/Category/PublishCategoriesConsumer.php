@@ -9,7 +9,7 @@ namespace Magento\CatalogMessageBroker\Model\MessageBus\Category;
 use Magento\CatalogExport\Event\Data\Entity;
 use Magento\CatalogMessageBroker\Model\Converter\AttributeCodesConverter;
 use Magento\CatalogMessageBroker\Model\FetchCategoriesInterface;
-use Magento\CatalogStorefrontApi\Api\CatalogServerInterface;
+use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportCategoriesRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportCategoryDataRequestInterface;
@@ -32,11 +32,6 @@ class PublishCategoriesConsumer implements ConsumerEventInterface
     private $fetchCategories;
 
     /**
-     * @var CatalogServerInterface
-     */
-    private $catalogServer;
-
-    /**
      * @var ImportCategoriesRequestInterfaceFactory
      */
     private $importCategoriesRequestInterfaceFactory;
@@ -52,27 +47,32 @@ class PublishCategoriesConsumer implements ConsumerEventInterface
     private $importCategoryDataRequestMapper;
 
     /**
+     * @var Connector
+     */
+    private $connector;
+
+    /**
      * @param LoggerInterface $logger
      * @param FetchCategoriesInterface $fetchCategories
-     * @param CatalogServerInterface $catalogServer
      * @param ImportCategoriesRequestInterfaceFactory $importCategoriesRequestInterfaceFactory
      * @param AttributeCodesConverter $attributeCodesConverter
      * @param ImportCategoryDataRequestMapper $importCategoryDataRequestMapper
+     * @param Connector $connector
      */
     public function __construct(
         LoggerInterface $logger,
         FetchCategoriesInterface $fetchCategories,
-        CatalogServerInterface $catalogServer,
         ImportCategoriesRequestInterfaceFactory $importCategoriesRequestInterfaceFactory,
         AttributeCodesConverter $attributeCodesConverter,
-        ImportCategoryDataRequestMapper $importCategoryDataRequestMapper
+        ImportCategoryDataRequestMapper $importCategoryDataRequestMapper,
+        Connector $connector
     ) {
         $this->logger = $logger;
         $this->fetchCategories = $fetchCategories;
-        $this->catalogServer = $catalogServer;
         $this->importCategoriesRequestInterfaceFactory = $importCategoriesRequestInterfaceFactory;
         $this->attributeCodesConverter = $attributeCodesConverter;
         $this->importCategoryDataRequestMapper = $importCategoryDataRequestMapper;
+        $this->connector = $connector;
     }
 
     /**
@@ -192,7 +192,7 @@ class PublishCategoriesConsumer implements ConsumerEventInterface
         $importCategoriesRequest->setCategories($categoriesRequestData);
         $importCategoriesRequest->setStore($storeCode);
 
-        $importResult = $this->catalogServer->importCategories($importCategoriesRequest);
+        $importResult = $this->connector->getConnection()->importCategories($importCategoriesRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Categories import is failed: "%s"', $importResult->getMessage()));
