@@ -69,7 +69,7 @@
     <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\ConfigurationProviderPool">
         <arguments>
             <argument name="providersMap" xsi:type="array">
-                <item name="in-process" xsi:type="object">
+                <item name="network" xsi:type="object">
                     Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\InProcessConfigurationProvider
                 </item>
             </argument>
