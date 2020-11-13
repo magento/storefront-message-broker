@@ -8,6 +8,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="DateTimeInterface" type="DateTime" />
     <preference for="Psr\Log\LoggerInterface" type="Magento\Framework\Logger\Monolog" />
+    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
     <preference for="Magento\Framework\ObjectManager\FactoryInterface" type="Magento\Framework\ObjectManager\Factory\Dynamic\Developer" />
     <preference for="Magento\Framework\App\ObjectManager\ConfigWriterInterface" type="Magento\Framework\App\ObjectManager\ConfigWriter\Filesystem" />
     <preference for="Magento\Framework\Config\ScopeInterface" type="Magento\Framework\Config\Scope" />

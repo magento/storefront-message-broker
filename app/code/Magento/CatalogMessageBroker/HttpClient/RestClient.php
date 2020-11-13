@@ -7,6 +7,7 @@ namespace Magento\CatalogMessageBroker\HttpClient;
 
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Url;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -41,21 +42,29 @@ class RestClient
     private $deploymentConfig;
 
     /**
+     * @var Url
+     */
+    private $url;
+
+    /**
      * @param CurlClient $curlClient
      * @param Json $jsonSerializer
      * @param DeploymentConfig $deploymentConfig
+     * @param Url $url
      * @param LoggerInterface $logger
      */
     public function __construct(
         CurlClient $curlClient,
         Json $jsonSerializer,
         DeploymentConfig $deploymentConfig,
+        Url $url,
         LoggerInterface $logger
     ) {
         $this->curlClient = $curlClient;
         $this->jsonSerializer = $jsonSerializer;
         $this->logger = $logger;
         $this->deploymentConfig = $deploymentConfig;
+        $this->url = $url;
     }
 
     /**
@@ -100,19 +109,13 @@ class RestClient
     private function constructResourceUrl($resourcePath): string
     {
         $storefrontAppHost = $this->deploymentConfig->get(
-            self::BACKOFFICE_URL_WEB_PATH,
-            $this->resolveDefaultMagentoUrl()
+            self::BACKOFFICE_URL_WEB_PATH
         );
-        return rtrim($storefrontAppHost, '/') . $this->restBasePath . ltrim($resourcePath, '/');
-    }
+        //Fallback for url in case of monolithic instalation
+        if (empty($storefrontAppHost)) {
+            $storefrontAppHost = $this->url->getBaseUrl();
+        }
 
-    /**
-     * For Monolithic installation return default url from phpunit_rest.xml const if present of return "localhost"
-     *
-     * @return string
-     */
-    private function resolveDefaultMagentoUrl()
-    {
-        return defined('TESTS_BASE_URL') ? TESTS_BASE_URL : 'localhost';
+        return rtrim($storefrontAppHost, '/') . $this->restBasePath . ltrim($resourcePath, '/');
     }
 }
