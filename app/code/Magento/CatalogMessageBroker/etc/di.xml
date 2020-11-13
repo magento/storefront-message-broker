@@ -60,7 +60,7 @@
     <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool">
         <arguments>
             <argument name="connectionMap" xsi:type="array">
-                <item name="in-process" xsi:type="string">Magento\CatalogStorefrontApi\Api\Catalog</item>
+                <item name="network" xsi:type="string">Magento\CatalogStorefrontApi\Api\Catalog</item>
                 <item name="in-memory" xsi:type="string">Magento\CatalogStorefrontApi\Api\InMemoryCatalog</item>
             </argument>
         </arguments>
