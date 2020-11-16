@@ -95,6 +95,18 @@ class InstallCommand extends Command
                 $mode,
                 'Base URL'
             ),
+            new InputOption(
+                Installer::GRPC_HOSTNAME,
+                null,
+                $mode,
+                'gRPC hostname'
+            ),
+            new InputOption(
+                Installer::GRPC_PORT,
+                null,
+                $mode,
+                'gRPC port'
+            ),
         ];
     }
 

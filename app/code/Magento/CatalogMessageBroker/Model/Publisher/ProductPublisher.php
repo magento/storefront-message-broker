@@ -10,7 +10,7 @@ use Magento\CatalogExport\Model\ChangedEntitiesMessageBuilder;
 use Magento\CatalogMessageBroker\Model\FetchProductsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\Product\PublishProductsConsumer;
 use Magento\CatalogMessageBroker\Model\ProductDataProcessor;
-use Magento\CatalogStorefrontApi\Api\CatalogServerInterface;
+use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductDataRequestMapper;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterfaceFactory;
@@ -40,11 +40,6 @@ class ProductPublisher
     private $logger;
 
     /**
-     * @var CatalogServerInterface
-     */
-    private $catalogServer;
-
-    /**
      * @var ImportProductsRequestInterfaceFactory
      */
     private $importProductsRequestInterfaceFactory;
@@ -69,36 +64,41 @@ class ProductPublisher
     private $changedEntitiesMessageBuilder;
 
     /**
+     * @var Connector
+     */
+    private $connector;
+
+    /**
      * @param State $state
      * @param LoggerInterface $logger
-     * @param CatalogServerInterface $catalogServer
      * @param ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory
      * @param ProductDataProcessor $productDataProcessor
      * @param ImportProductDataRequestMapper $importProductDataRequestMapper
      * @param FetchProductsInterface $fetchProducts
      * @param ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder
+     * @param Connector $connector
      * @param int $batchSize
      */
     public function __construct(
         State $state,
         LoggerInterface $logger,
-        CatalogServerInterface $catalogServer,
         ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory,
         ProductDataProcessor $productDataProcessor,
         ImportProductDataRequestMapper $importProductDataRequestMapper,
         FetchProductsInterface $fetchProducts,
         ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder,
+        Connector $connector,
         int $batchSize
     ) {
         $this->batchSize = $batchSize;
         $this->state = $state;
         $this->logger = $logger;
-        $this->catalogServer = $catalogServer;
         $this->importProductsRequestInterfaceFactory = $importProductsRequestInterfaceFactory;
         $this->productDataProcessor = $productDataProcessor;
         $this->importProductDataRequestMapper = $importProductDataRequestMapper;
         $this->fetchProducts = $fetchProducts;
         $this->changedEntitiesMessageBuilder = $changedEntitiesMessageBuilder;
+        $this->connector = $connector;
     }
 
     /**
@@ -196,7 +196,7 @@ class ProductPublisher
         $importProductRequest->setProducts($productsRequestData);
         $importProductRequest->setStore($storeCode);
 
-        $importResult = $this->catalogServer->importProducts($importProductRequest);
+        $importResult = $this->connector->getConnection()->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Products import is failed: "%s"', $importResult->getMessage()));
