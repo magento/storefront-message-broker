@@ -12,33 +12,39 @@ use \Magento\Framework\MessageQueue\Lock\WriterInterface;
  * Stub class for Magento\MessageQueue\Model\ResourceModel\Lock to prevent error during message processing.
  * Lock was implemented for "db" connection type
  */
-class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb implements ReaderInterface, WriterInterface
+class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb implements
+    ReaderInterface,
+    WriterInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _construct()
     {
+        //Stub cont
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function read(\Magento\Framework\MessageQueue\LockInterface $lock, $code)
     {
+        //Stub content
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function saveLock(\Magento\Framework\MessageQueue\LockInterface $lock)
     {
+        //Stub content
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function releaseOutdatedLocks()
     {
+        //Stub content
     }
 }

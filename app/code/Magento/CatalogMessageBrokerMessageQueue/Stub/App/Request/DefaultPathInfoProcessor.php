@@ -20,13 +20,11 @@ class DefaultPathInfoProcessor implements PathInfoProcessorInterface
      *
      * @param \Magento\Framework\App\RequestInterface $request
      * @param string $pathInfo
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @return string
      */
     public function process(\Magento\Framework\App\RequestInterface $request, $pathInfo)
     {
-        echo (new \Exception())->getTraceAsString();
-        echo __METHOD__, "\n\n";
-
         return $pathInfo;
     }
 }

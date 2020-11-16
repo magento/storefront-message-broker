@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class InstallCommand extends  Command
+class InstallCommand extends Command
 {
     /**
      * Configuration for AMQP
@@ -45,7 +45,7 @@ class InstallCommand extends  Command
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -114,10 +114,13 @@ class InstallCommand extends  Command
     }
 
     /**
+     * Install message-broker application
+     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|void
      * @throws \Magento\Framework\Exception\FileSystemException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

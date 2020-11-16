@@ -1,6 +1,6 @@
 {
-    "name": "magento/module-micro-service",
-    "description": "Magento module to run micro service",
+    "name": "magento/catalog-message-broker-message-queue",
+    "description": "Magento module to make message broker working with native Magento Message Queue",
     "require": {
         "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0",
         "magento/framework": "*"
@@ -16,7 +16,7 @@
             "cli_commands.php"
         ],
         "psr-4": {
-            "Magento\\Grpc\\": ""
+            "Magento\\CatalogMessageBrokerMessageQueue\\": ""
         }
     }
 }

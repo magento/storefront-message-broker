@@ -15,24 +15,18 @@ use Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface;
 class CustomAttributesDefaultTypeLocator implements CustomAttributeTypeLocatorInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getType($attributeCode, $entityType)
     {
-        echo (new \Exception())->getTraceAsString();
-        echo __METHOD__, "\n\n";
-
         return TypeProcessor::NORMALIZED_ANY_TYPE;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAllServiceDataInterfaces()
     {
-        echo (new \Exception())->getTraceAsString();
-        echo __METHOD__, "\n\n";
-
         return [];
     }
 }
