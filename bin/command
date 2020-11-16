@@ -11,8 +11,8 @@ if (PHP_SAPI !== 'cli') {
 }
 
 try {
-    require __DIR__ . '/../app/bootstrap.php';
-} catch (\Exception $e) {
+    require __DIR__ . '/../app/message_broker_bootstrap.php';
+} catch (\Throwable $e) {
     echo 'Autoload error: ' . $e->getMessage();
     exit(1);
 }
@@ -32,7 +32,7 @@ try {
     $application = new \Symfony\Component\Console\Application('Magento CLI');
     $application->addCommands($commands);
     $application->run();
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
     while ($e) {
         echo $e->getMessage();
         echo $e->getTraceAsString();

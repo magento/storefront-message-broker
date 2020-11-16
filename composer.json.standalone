@@ -58,7 +58,7 @@
       ]
     },
     "files": [
-      "app/etc/NonComposerComponentRegistration.php"
+      "app/etc/message_broker/NonComposerComponentRegistration.php"
     ],
     "config": {
       "preferred-install": "dist",

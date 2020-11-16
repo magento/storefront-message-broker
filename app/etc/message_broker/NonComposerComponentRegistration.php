@@ -15,7 +15,7 @@ use RuntimeException;
  */
 (static function (): void {
     $globPatterns = require __DIR__ . '/registration_globlist.php';
-    $baseDir = \dirname(__DIR__, 2) . '/';
+    $baseDir = \dirname(__DIR__, 3) . '/';
 
     foreach ($globPatterns as $globPattern) {
         // Sorting is disabled intentionally for performance improvement

@@ -13,6 +13,6 @@ if (in_array('phar', \stream_get_wrappers())) {
 }
 #ini_set('display_errors', 1);
 
-require_once __DIR__ . '/autoload.php';
+require_once __DIR__ . '/message_broker_autoload.php';
 // Sets default autoload mappings, may be overridden in Bootstrap::create
 \Magento\Framework\App\Bootstrap::populateAutoloader(BP, []);

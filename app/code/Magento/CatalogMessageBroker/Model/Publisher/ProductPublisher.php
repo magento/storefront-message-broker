@@ -96,6 +96,7 @@ class ProductPublisher
         $this->importProductsRequestInterfaceFactory = $importProductsRequestInterfaceFactory;
         $this->productDataProcessor = $productDataProcessor;
         $this->importProductDataRequestMapper = $importProductDataRequestMapper;
+        // TODO: delete unused classes
         $this->fetchProducts = $fetchProducts;
         $this->changedEntitiesMessageBuilder = $changedEntitiesMessageBuilder;
         $this->connector = $connector;
@@ -112,6 +113,7 @@ class ProductPublisher
      *
      * @throws \Exception
      * @deprecated
+     * // //TODO rename, remove deprecation notice
      */
     public function publish(
         array $products,

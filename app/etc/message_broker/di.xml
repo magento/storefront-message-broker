@@ -8,7 +8,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="DateTimeInterface" type="DateTime" />
     <preference for="Psr\Log\LoggerInterface" type="Magento\Framework\Logger\Monolog" />
-    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
     <preference for="Magento\Framework\ObjectManager\FactoryInterface" type="Magento\Framework\ObjectManager\Factory\Dynamic\Developer" />
     <preference for="Magento\Framework\App\ObjectManager\ConfigWriterInterface" type="Magento\Framework\App\ObjectManager\ConfigWriter\Filesystem" />
     <preference for="Magento\Framework\Config\ScopeInterface" type="Magento\Framework\Config\Scope" />
@@ -264,8 +263,6 @@
     <preference for="Magento\Framework\MessageQueue\PoisonPill\PoisonPillPutInterface" type="Magento\Framework\MessageQueue\PoisonPill\PoisonPillPut"/>
     <preference for="Magento\Framework\MessageQueue\PoisonPill\PoisonPillReadInterface" type="Magento\Framework\MessageQueue\PoisonPill\PoisonPillRead"/>
     <preference for="Magento\Framework\MessageQueue\CallbackInvokerInterface" type="Magento\Framework\MessageQueue\CallbackInvoker"/>
-    <preference for="Magento\Framework\App\Request\PathInfoProcessorInterface" type="Magento\CatalogMessageBrokerMessageQueue\Stub\App\Request\DefaultPathInfoProcessor" />
-    <preference for="Magento\Framework\Json\EncoderInterface" type="Magento\CatalogMessageBrokerMessageQueue\Stub\Json\Encoder" />
     <!--    Framework requirements-->
     <preference for="Magento\Framework\Api\AttributeTypeResolverInterface" type="Magento\Framework\Reflection\AttributeTypeResolver" />
     <preference for="Magento\Framework\Model\ResourceModel\Type\Db\ConnectionFactoryInterface" type="Magento\Framework\Model\ResourceModel\Type\Db\ConnectionFactory" />
@@ -277,7 +274,6 @@
     <preference for="Magento\Framework\Json\DecoderInterface" type="Magento\Framework\Json\Decoder" />
     <preference for="Magento\Framework\Model\ResourceModel\Db\TransactionManagerInterface" type="Magento\Framework\Model\ResourceModel\Db\TransactionManager" />
     <preference for="Magento\Framework\Filesystem\DriverInterface" type="Magento\Framework\Filesystem\Driver\File" />
-    <preference for="Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface" type="\Magento\CatalogMessageBrokerMessageQueue\Stub\CustomAttributesDefaultTypeLocator" />
     <type name="Magento\Framework\Communication\Config\CompositeReader">
         <arguments>
             <argument name="readers" xsi:type="array">
