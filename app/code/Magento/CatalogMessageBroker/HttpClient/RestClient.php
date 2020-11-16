@@ -5,17 +5,16 @@
  */
 namespace Magento\CatalogMessageBroker\HttpClient;
 
-use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\Url;
+use Magento\Framework\UrlInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * Client for invoking REST API
+ * TODO: ad-hoc solution. replace with some ready-to-use library
  */
 class RestClient
 {
-    const BACKOFFICE_URL_WEB_PATH = 'system/default/backoffice/web/base_url';
     /**
      * @var string REST URL base path
      */
@@ -32,39 +31,31 @@ class RestClient
     private $jsonSerializer;
 
     /**
+     * @var UrlInterface
+     */
+    private $url;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * @var DeploymentConfig
-     */
-    private $deploymentConfig;
-
-    /**
-     * @var Url
-     */
-    private $url;
-
-    /**
      * @param CurlClient $curlClient
      * @param Json $jsonSerializer
-     * @param DeploymentConfig $deploymentConfig
-     * @param Url $url
+     * @param UrlInterface $url
      * @param LoggerInterface $logger
      */
     public function __construct(
         CurlClient $curlClient,
         Json $jsonSerializer,
-        DeploymentConfig $deploymentConfig,
-        Url $url,
+        UrlInterface $url,
         LoggerInterface $logger
     ) {
         $this->curlClient = $curlClient;
         $this->jsonSerializer = $jsonSerializer;
-        $this->logger = $logger;
-        $this->deploymentConfig = $deploymentConfig;
         $this->url = $url;
+        $this->logger = $logger;
     }
 
     /**
@@ -108,14 +99,8 @@ class RestClient
      */
     private function constructResourceUrl($resourcePath): string
     {
-        $storefrontAppHost = $this->deploymentConfig->get(
-            self::BACKOFFICE_URL_WEB_PATH
-        );
-        //Fallback for url in case of monolithic instalation
-        if (empty($storefrontAppHost)) {
-            $storefrontAppHost = $this->url->getBaseUrl();
-        }
-
+        // TODO: for test purposes only. base URL of "Export API" should be retrieved from configuration/ or from event
+        $storefrontAppHost = $this->url->getBaseUrl();
         return rtrim($storefrontAppHost, '/') . $this->restBasePath . ltrim($resourcePath, '/');
     }
 }
