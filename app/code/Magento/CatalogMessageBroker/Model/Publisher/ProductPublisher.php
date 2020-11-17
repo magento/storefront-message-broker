@@ -80,7 +80,7 @@ class ProductPublisher
     }
 
     /**
-     * Publish data to Storefront directly
+     * Publish data to Storefront
      *
      * @param array $products
      * @param string $storeCode
@@ -95,34 +95,6 @@ class ProductPublisher
         string $storeCode,
         string $actionType
     ): void {
-        try {
-            $this->publishEntities($products, $storeCode, $actionType);
-        } catch (\Throwable $e) {
-            $this->logger->critical(
-                \sprintf(
-                    'Error on publish product ids "%s" in store %s',
-                    \implode(', ', array_keys($products)),
-                    $storeCode
-                ),
-                ['exception' => $e]
-            );
-        }
-    }
-
-    /**
-     * Publish entities to the queue
-     *
-     * @param array $products
-     * @param string $storeCode
-     * @param string $actionType
-     *
-     * @return void
-     */
-    private function publishEntities(
-        array $products,
-        string $storeCode,
-        string $actionType
-    ): void {
         foreach (\array_chunk($products, $this->batchSize) as $productsData) {
             $this->logger->debug(
                 \sprintf(
@@ -132,8 +104,17 @@ class ProductPublisher
                 ),
                 ['verbose' => $productsData]
             );
-            if (count($productsData)) {
+            try {
                 $this->importProducts($storeCode, array_values($productsData), $actionType);
+            } catch (\Throwable $e) {
+                $this->logger->critical(
+                    \sprintf(
+                        'Error during import product ids "%s" in store %s',
+                        \implode(', ', array_keys($products)),
+                        $storeCode
+                    ),
+                    ['exception' => $e]
+                );
             }
         }
     }
