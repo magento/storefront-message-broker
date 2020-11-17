@@ -19,14 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InstallCommand extends Command
 {
     /**
-     * Configuration for AMQP
-     */
-    const AMQP_HOST = 'amqp-host';
-    const AMQP_PORT = 'amqp-port';
-    const AMQP_USER = 'amqp-user';
-    const AMQP_PASSWORD = 'amqp-password';
-
-    /**
      * @var Installer
      */
     private $installer;
@@ -66,25 +58,25 @@ class InstallCommand extends Command
     {
         return [
             new InputOption(
-                self::AMQP_HOST,
+                Installer::AMQP_HOST,
                 null,
                 $mode,
                 'AMQP host'
             ),
             new InputOption(
-                self::AMQP_PORT,
+                Installer::AMQP_PORT,
                 null,
                 $mode,
                 'AMQP port'
             ),
             new InputOption(
-                self::AMQP_PASSWORD,
+                Installer::AMQP_PASSWORD,
                 null,
                 $mode,
                 'AMQP password'
             ),
             new InputOption(
-                self::AMQP_USER,
+                Installer::AMQP_USER,
                 null,
                 $mode,
                 'AMQP user'
@@ -95,22 +87,13 @@ class InstallCommand extends Command
                 $mode,
                 'Base URL'
             ),
+            new InputOption(
+                Installer::BASE_URL,
+                null,
+                $mode,
+                'Base URL'
+            ),
         ];
-    }
-
-    /**
-     * Map options
-     *
-     * @param array $options
-     * @return array
-     */
-    private function mapOptions(array $options): array
-    {
-        $options[Installer::AMQP_PORT] = $options[self::AMQP_PORT];
-        $options[Installer::AMQP_HOST] = $options[self::AMQP_HOST];
-        $options[Installer::AMQP_USER] = $options[self::AMQP_USER];
-        $options[Installer::AMQP_PASSWORD] = $options[self::AMQP_PASSWORD];
-        return $options;
     }
 
     /**

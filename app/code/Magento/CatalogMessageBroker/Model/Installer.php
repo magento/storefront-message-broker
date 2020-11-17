@@ -13,10 +13,11 @@ class Installer
     /**
      * Configuration for AMQP
      */
-    const AMQP_HOST = 'host';
-    const AMQP_PORT = 'port';
-    const AMQP_USER = 'user';
-    const AMQP_PASSWORD = 'password';
+    const AMQP_HOST = 'amqp-host';
+    const AMQP_PORT = 'amqp-port';
+    const AMQP_USER = 'amqp-user';
+    const AMQP_PASSWORD = 'amqp-password';
+    const CONSUMER_WAIT_FOR_MESSAGES = 'consumers_wait_for_messages';
 
     /**
      * Other settings
@@ -79,7 +80,7 @@ class Installer
             'app_env' => [
                 'cache_types' => $this->getCacheTypes(),
                 'queue' => [
-                    'consumers_wait_for_messages' => 0,
+                    'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],
                     'amqp' => [
                         self::AMQP_HOST => $parameters[self::AMQP_HOST],
                         self::AMQP_USER => $parameters[self::AMQP_USER],
