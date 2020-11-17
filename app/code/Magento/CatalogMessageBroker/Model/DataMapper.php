@@ -8,11 +8,9 @@ namespace Magento\CatalogMessageBroker\Model;
 use Magento\CatalogMessageBroker\Model\DataMapper\DataMapperInterface;
 
 /**
- * Processing data for the product.
- *
- * Processes data coming from old api and merges data from new API to replace usage of existing data providers.
+ * Data mapper for product data.
  */
-class ProductDataProcessor
+class DataMapper implements DataMapperInterface
 {
     /**
      * @var DataMapperInterface[]
@@ -91,7 +89,7 @@ class ProductDataProcessor
      * @deprecated this is a temporary solution that will be replaced
      * with declarative schema of mapping exported data format to storefront format
      */
-    public function merge(array $product): array
+    public function map(array $product): array
     {
         $importProduct = [];
 

@@ -20,7 +20,7 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\CatalogMessageBroker\Model\ProductDataProcessor">
+    <type name="Magento\CatalogMessageBroker\Model\DataMapper">
         <arguments>
             <argument name="dataMappers" xsi:type="array">
                 <item name="dynamic_attributes" xsi:type="object">Magento\CatalogMessageBroker\Model\DataMapper\DynamicAttribute</item>

@@ -9,12 +9,11 @@ namespace Magento\CatalogMessageBroker\Model\Publisher;
 use Magento\CatalogExport\Model\ChangedEntitiesMessageBuilder;
 use Magento\CatalogMessageBroker\Model\FetchProductsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\Product\PublishProductsConsumer;
-use Magento\CatalogMessageBroker\Model\ProductDataProcessor;
+use Magento\CatalogMessageBroker\Model\DataMapper;
 use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductDataRequestMapper;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterfaceFactory;
-use Magento\Framework\App\State;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -30,11 +29,6 @@ class ProductPublisher
     private $batchSize;
 
     /**
-     * @var State
-     */
-    private $state;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -45,23 +39,14 @@ class ProductPublisher
     private $importProductsRequestInterfaceFactory;
 
     /**
-     * @var ProductDataProcessor
+     * @var DataMapper
      */
-    private $productDataProcessor;
+    private $dataMapper;
 
     /**
      * @var ImportProductDataRequestMapper
      */
     private $importProductDataRequestMapper;
-    /**
-     * @var FetchProductsInterface
-     */
-    private $fetchProducts;
-
-    /**
-     * @var ChangedEntitiesMessageBuilder
-     */
-    private $changedEntitiesMessageBuilder;
 
     /**
      * @var Connector
@@ -69,10 +54,9 @@ class ProductPublisher
     private $connector;
 
     /**
-     * @param State $state
      * @param LoggerInterface $logger
      * @param ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory
-     * @param ProductDataProcessor $productDataProcessor
+     * @param DataMapper $dataMapper
      * @param ImportProductDataRequestMapper $importProductDataRequestMapper
      * @param FetchProductsInterface $fetchProducts
      * @param ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder
@@ -80,25 +64,18 @@ class ProductPublisher
      * @param int $batchSize
      */
     public function __construct(
-        State $state,
         LoggerInterface $logger,
         ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory,
-        ProductDataProcessor $productDataProcessor,
+        DataMapper $dataMapper,
         ImportProductDataRequestMapper $importProductDataRequestMapper,
-        FetchProductsInterface $fetchProducts,
-        ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder,
         Connector $connector,
         int $batchSize
     ) {
         $this->batchSize = $batchSize;
-        $this->state = $state;
         $this->logger = $logger;
         $this->importProductsRequestInterfaceFactory = $importProductsRequestInterfaceFactory;
-        $this->productDataProcessor = $productDataProcessor;
+        $this->dataMapper = $dataMapper;
         $this->importProductDataRequestMapper = $importProductDataRequestMapper;
-        // TODO: delete unused classes
-        $this->fetchProducts = $fetchProducts;
-        $this->changedEntitiesMessageBuilder = $changedEntitiesMessageBuilder;
         $this->connector = $connector;
     }
 
@@ -112,8 +89,6 @@ class ProductPublisher
      * @return void
      *
      * @throws \Exception
-     * @deprecated
-     * // //TODO rename, remove deprecation notice
      */
     public function publish(
         array $products,
@@ -151,7 +126,7 @@ class ProductPublisher
         foreach (\array_chunk($products, $this->batchSize) as $productsData) {
             $this->logger->debug(
                 \sprintf(
-                    'Publish products with ids "%s" in store %s',
+                    'Import products with ids "%s" in store %s',
                     \implode(', ', array_keys($productsData)),
                     $storeCode
                 ),
@@ -182,7 +157,7 @@ class ProductPublisher
         foreach ($products as $product) {
             $product = array_replace_recursive(
                 $product,
-                $this->productDataProcessor->merge($product)
+                $this->dataMapper->map($product)
             );
             // be sure, that data passed to Import API in the expected format
             $productsRequestData[] = $this->importProductDataRequestMapper->setData(
