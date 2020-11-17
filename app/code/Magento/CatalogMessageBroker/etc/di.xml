@@ -20,7 +20,7 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\CatalogMessageBroker\Model\ProductDataProcessor">
+    <type name="Magento\CatalogMessageBroker\Model\DataMapper">
         <arguments>
             <argument name="dataMappers" xsi:type="array">
                 <item name="dynamic_attributes" xsi:type="object">Magento\CatalogMessageBroker\Model\DataMapper\DynamicAttribute</item>
@@ -57,4 +57,33 @@
             <argument name="batchSize" xsi:type="number">500</argument>
         </arguments>
     </type>
+
+    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector">
+        <arguments>
+            <argument name="connectionType" xsi:type="string">in-memory</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool">
+        <arguments>
+            <argument name="connectionMap" xsi:type="array">
+                <item name="network" xsi:type="string">Magento\CatalogStorefrontApi\Api\Catalog</item>
+                <item name="in-memory" xsi:type="string">Magento\CatalogStorefrontApi\Api\InMemoryCatalog</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\ConfigurationProviderPool">
+        <arguments>
+            <argument name="providersMap" xsi:type="array">
+                <item name="network" xsi:type="object">
+                    Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\InProcessConfigurationProvider
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Stubs -->
+    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
+
 </config>

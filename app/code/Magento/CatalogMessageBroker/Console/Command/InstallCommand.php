@@ -6,6 +6,7 @@
 namespace Magento\CatalogMessageBroker\Console\Command;
 
 use Magento\CatalogMessageBroker\Model\Installer;
+use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -88,10 +89,16 @@ class InstallCommand extends Command
                 'Base URL'
             ),
             new InputOption(
-                Installer::BASE_URL,
+                Installer::GRPC_HOSTNAME,
                 null,
                 $mode,
-                'Base URL'
+                'gRPC hostname'
+            ),
+            new InputOption(
+                Installer::GRPC_PORT,
+                null,
+                $mode,
+                'gRPC port'
             ),
         ];
     }
@@ -107,8 +114,16 @@ class InstallCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->installer->install(
-            $this->mapOptions($input->getOptions())
-        );
+        try {
+            $this->installer->install(
+                $this->mapOptions($input->getOptions())
+            );
+        } catch (\Throwable $exception) {
+            $output->writeln('Installation failed: ' . $exception->getMessage());
+            return Cli::RETURN_FAILURE;
+        }
+        $output->writeln('Installation complete');
+
+        return Cli::RETURN_SUCCESS;
     }
 }

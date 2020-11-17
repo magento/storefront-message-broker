@@ -9,12 +9,11 @@ namespace Magento\CatalogMessageBroker\Model\Publisher;
 use Magento\CatalogExport\Model\ChangedEntitiesMessageBuilder;
 use Magento\CatalogMessageBroker\Model\FetchProductsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\Product\PublishProductsConsumer;
-use Magento\CatalogMessageBroker\Model\ProductDataProcessor;
-use Magento\CatalogStorefrontApi\Api\CatalogServerInterface;
+use Magento\CatalogMessageBroker\Model\DataMapper;
+use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductDataRequestMapper;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterfaceFactory;
-use Magento\Framework\App\State;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -30,19 +29,9 @@ class ProductPublisher
     private $batchSize;
 
     /**
-     * @var State
-     */
-    private $state;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
-
-    /**
-     * @var CatalogServerInterface
-     */
-    private $catalogServer;
 
     /**
      * @var ImportProductsRequestInterfaceFactory
@@ -50,59 +39,48 @@ class ProductPublisher
     private $importProductsRequestInterfaceFactory;
 
     /**
-     * @var ProductDataProcessor
+     * @var DataMapper
      */
-    private $productDataProcessor;
+    private $dataMapper;
 
     /**
      * @var ImportProductDataRequestMapper
      */
     private $importProductDataRequestMapper;
-    /**
-     * @var FetchProductsInterface
-     */
-    private $fetchProducts;
 
     /**
-     * @var ChangedEntitiesMessageBuilder
+     * @var Connector
      */
-    private $changedEntitiesMessageBuilder;
+    private $connector;
 
     /**
-     * @param State $state
      * @param LoggerInterface $logger
-     * @param CatalogServerInterface $catalogServer
      * @param ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory
-     * @param ProductDataProcessor $productDataProcessor
+     * @param DataMapper $dataMapper
      * @param ImportProductDataRequestMapper $importProductDataRequestMapper
      * @param FetchProductsInterface $fetchProducts
      * @param ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder
+     * @param Connector $connector
      * @param int $batchSize
      */
     public function __construct(
-        State $state,
         LoggerInterface $logger,
-        CatalogServerInterface $catalogServer,
         ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory,
-        ProductDataProcessor $productDataProcessor,
+        DataMapper $dataMapper,
         ImportProductDataRequestMapper $importProductDataRequestMapper,
-        FetchProductsInterface $fetchProducts,
-        ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder,
+        Connector $connector,
         int $batchSize
     ) {
         $this->batchSize = $batchSize;
-        $this->state = $state;
         $this->logger = $logger;
-        $this->catalogServer = $catalogServer;
         $this->importProductsRequestInterfaceFactory = $importProductsRequestInterfaceFactory;
-        $this->productDataProcessor = $productDataProcessor;
+        $this->dataMapper = $dataMapper;
         $this->importProductDataRequestMapper = $importProductDataRequestMapper;
-        $this->fetchProducts = $fetchProducts;
-        $this->changedEntitiesMessageBuilder = $changedEntitiesMessageBuilder;
+        $this->connector = $connector;
     }
 
     /**
-     * Publish data to Storefront directly
+     * Publish data to Storefront
      *
      * @param array $products
      * @param string $storeCode
@@ -111,37 +89,8 @@ class ProductPublisher
      * @return void
      *
      * @throws \Exception
-     * @deprecated
      */
     public function publish(
-        array $products,
-        string $storeCode,
-        string $actionType
-    ): void {
-        try {
-            $this->publishEntities($products, $storeCode, $actionType);
-        } catch (\Throwable $e) {
-            $this->logger->critical(
-                \sprintf(
-                    'Error on publish product ids "%s" in store %s',
-                    \implode(', ', array_keys($products)),
-                    $storeCode
-                ),
-                ['exception' => $e]
-            );
-        }
-    }
-
-    /**
-     * Publish entities to the queue
-     *
-     * @param array $products
-     * @param string $storeCode
-     * @param string $actionType
-     *
-     * @return void
-     */
-    private function publishEntities(
         array $products,
         string $storeCode,
         string $actionType
@@ -149,14 +98,23 @@ class ProductPublisher
         foreach (\array_chunk($products, $this->batchSize) as $productsData) {
             $this->logger->debug(
                 \sprintf(
-                    'Publish products with ids "%s" in store %s',
+                    'Import products with ids "%s" in store %s',
                     \implode(', ', array_keys($productsData)),
                     $storeCode
                 ),
                 ['verbose' => $productsData]
             );
-            if (count($productsData)) {
+            try {
                 $this->importProducts($storeCode, array_values($productsData), $actionType);
+            } catch (\Throwable $e) {
+                $this->logger->critical(
+                    \sprintf(
+                        'Error during import product ids "%s" in store %s',
+                        \implode(', ', array_keys($products)),
+                        $storeCode
+                    ),
+                    ['exception' => $e]
+                );
             }
         }
     }
@@ -180,7 +138,7 @@ class ProductPublisher
         foreach ($products as $product) {
             $product = array_replace_recursive(
                 $product,
-                $this->productDataProcessor->merge($product)
+                $this->dataMapper->map($product)
             );
             // be sure, that data passed to Import API in the expected format
             $productsRequestData[] = $this->importProductDataRequestMapper->setData(
@@ -196,7 +154,7 @@ class ProductPublisher
         $importProductRequest->setProducts($productsRequestData);
         $importProductRequest->setStore($storeCode);
 
-        $importResult = $this->catalogServer->importProducts($importProductRequest);
+        $importResult = $this->connector->getConnection()->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Products import is failed: "%s"', $importResult->getMessage()));

@@ -42,7 +42,9 @@
     "laminas/laminas-validator": "^2.6.0",
     "laminas/laminas-view": "~2.11.2",
     "magento/module-amqp": "*",
-    "magento/module-message-queue": "*"
+    "magento/module-message-queue": "*",
+    "grpc/grpc": "^1.30",
+    "google/protobuf": "^3.14"
   },
   "autoload": {
     "psr-4": {
@@ -58,7 +60,7 @@
       ]
     },
     "files": [
-      "app/etc/NonComposerComponentRegistration.php"
+      "app/etc/message_broker/NonComposerComponentRegistration.php"
     ],
     "config": {
       "preferred-install": "dist",
