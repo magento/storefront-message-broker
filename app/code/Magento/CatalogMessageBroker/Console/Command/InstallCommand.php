@@ -100,7 +100,34 @@ class InstallCommand extends Command
                 $mode,
                 'gRPC port'
             ),
+            new InputOption(
+                Installer::CONSUMER_WAIT_FOR_MESSAGES,
+                null,
+                $mode,
+                'Consumer wait for messages'
+            )
         ];
+    }
+
+    /**
+     * Validate input options
+     *
+     * @param InputInterface $input
+     * @return void
+     * @throws \Symfony\Component\Console\Exception\RuntimeException
+     */
+    private function validate(InputInterface $input): void
+    {
+        $givenOptions = $input->getOptions();
+        foreach ($this->getOptionsList() as $option) {
+            if ($option->isValueRequired()) {
+                if (empty($givenOptions[$option->getName()])) {
+                    throw new \Symfony\Component\Console\Exception\RuntimeException(
+                        sprintf("%s option is not specified", $option->getName())
+                    );
+                }
+            }
+        }
     }
 
     /**
@@ -115,9 +142,8 @@ class InstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->installer->install(
-                $this->mapOptions($input->getOptions())
-            );
+            $this->validate($input);
+            $this->installer->install($input->getOptions());
         } catch (\Throwable $exception) {
             $output->writeln('Installation failed: ' . $exception->getMessage());
             return Cli::RETURN_FAILURE;

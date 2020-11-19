@@ -1,6 +1,8 @@
 /.idea
 /app/etc/config.php
 /app/etc/env.php
+composer.lock
+composer.json
 /var/*
 !/var/.htaccess
 /vendor/*
