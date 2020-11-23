@@ -41,8 +41,6 @@ To add gRPC server configuration please run next command:
 3. Than run ```bin/install microservice:install ``` with all required arguments.
 4. Specify environment variable: ```communication-type```. It should be equal either to `network` or `in-memory`.
 
-
-
 ### Stubs
 In order to make magento framework work with Magento modules, there were created few stubs
 and add few preferences:

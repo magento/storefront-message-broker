@@ -159,7 +159,9 @@ class ProductPublisher
         $importProductRequest->setProducts($productsRequestData);
         $importProductRequest->setStore($storeCode);
 
-        $importResult = $this->connector->getConnection('catalog')->importProducts($importProductRequest);
+        $importResult = $this->connector
+            ->getConnection(self::SERVICE_NAME)
+            ->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Products import is failed: "%s"', $importResult->getMessage()));
