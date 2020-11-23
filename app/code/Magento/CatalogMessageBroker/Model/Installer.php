@@ -100,10 +100,10 @@ class Installer
                 'queue' => [
                     'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],
                     'amqp' => [
-                        self::AMQP_HOST => $parameters[self::AMQP_HOST],
-                        self::AMQP_USER => $parameters[self::AMQP_USER],
-                        self::AMQP_PASSWORD => $parameters[self::AMQP_PASSWORD],
-                        self::AMQP_PORT => $parameters[self::AMQP_PORT],
+                        'host' => $parameters[self::AMQP_HOST],
+                        'user' => $parameters[self::AMQP_USER],
+                        'password' => $parameters[self::AMQP_PASSWORD],
+                        'port' => $parameters[self::AMQP_PORT],
                     ]
                 ],
                 'system' => [
