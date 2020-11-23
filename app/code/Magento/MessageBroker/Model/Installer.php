@@ -3,7 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\CatalogMessageBroker\Model;
+namespace Magento\MessageBroker\Model;
 
 use Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool;
 use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;

@@ -12,14 +12,6 @@
     <preference for="Magento\CatalogMessageBroker\Model\MessageBus\Data\ChangedEntitiesInterface" type="Magento\CatalogMessageBroker\Model\MessageBus\Data\ChangedEntities" />
     <preference for="Magento\CatalogMessageBroker\Model\MessageBus\Data\DataInterface" type="Magento\CatalogMessageBroker\Model\MessageBus\Data\Data" />
     <preference for="Magento\CatalogMessageBroker\Model\MessageBus\Data\MetaInterface" type="Magento\CatalogMessageBroker\Model\MessageBus\Data\Meta" />
-    
-    <type name="Magento\Framework\Console\CommandListInterface">
-        <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="message-broker-installer" xsi:type="object">Magento\CatalogMessageBroker\Console\Command\InstallCommand</item>
-            </argument>
-        </arguments>
-    </type>
     <type name="Magento\CatalogMessageBroker\Model\DataMapper">
         <arguments>
             <argument name="dataMappers" xsi:type="array">
@@ -84,11 +76,4 @@
             </argument>
         </arguments>
     </type>
-
-    <!-- Stubs -->
-    <preference for="\Magento\MessageQueue\Model\ResourceModel\Lock" type="\Magento\CatalogMessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
-
-    <preference for="Magento\Framework\Json\EncoderInterface" type="\Magento\CatalogMessageBroker\Stub\Encoder" />
-    <preference for="Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface" type="Magento\CatalogMessageBroker\Stub\CustomAttributesDefaultTypeLocator" />
-
 </config>

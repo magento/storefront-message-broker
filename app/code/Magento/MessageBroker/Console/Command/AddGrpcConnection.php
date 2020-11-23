@@ -3,7 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\CatalogMessageBroker\Console\Command;
+namespace Magento\MessageBroker\Console\Command;
 
 use Magento\CatalogMessageBroker\Model\Publisher\ProductPublisher;
 use Magento\Framework\App\DeploymentConfig\Writer;

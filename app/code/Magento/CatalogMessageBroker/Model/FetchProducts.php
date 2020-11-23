@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Magento\CatalogMessageBroker\Model;
 
-use Magento\CatalogMessageBroker\HttpClient\RestClient;
+use Magento\MessageBroker\HttpClient\RestClient;
 use Magento\CatalogExport\Event\Data\Entity;
 use Psr\Log\LoggerInterface;
 

@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Stub;
+namespace Magento\MessageBroker\Stub;
 
 use Magento\Framework\Reflection\TypeProcessor;
 use Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface;

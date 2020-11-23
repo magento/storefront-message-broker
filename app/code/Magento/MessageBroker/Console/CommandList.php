@@ -5,10 +5,10 @@
  */
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Console;
+namespace Magento\MessageBroker\Console;
 
-use Magento\CatalogMessageBroker\Console\Command\AddGrpcConnection;
-use Magento\CatalogMessageBroker\Console\Command\InstallCommand;
+use Magento\MessageBroker\Console\Command\AddGrpcConnection;
+use Magento\MessageBroker\Console\Command\InstallCommand;
 use Magento\Framework\ObjectManagerInterface;
 
 /**

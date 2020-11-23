@@ -3,9 +3,9 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\CatalogMessageBroker\Console\Command;
+namespace Magento\MessageBroker\Console\Command;
 
-use Magento\CatalogMessageBroker\Model\Installer;
+use Magento\MessageBroker\Model\Installer;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
