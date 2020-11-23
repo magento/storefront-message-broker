@@ -192,7 +192,9 @@ class PublishCategoriesConsumer implements ConsumerEventInterface
         $importCategoriesRequest->setCategories($categoriesRequestData);
         $importCategoriesRequest->setStore($storeCode);
 
-        $importResult = $this->connector->getConnection()->importCategories($importCategoriesRequest);
+        $importResult = $this->connector
+            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME)
+            ->importCategories($importCategoriesRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Categories import is failed: "%s"', $importResult->getMessage()));

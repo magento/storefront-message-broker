@@ -76,4 +76,12 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="\Magento\MessageBroker\Console\Command\AddGrpcConnection">
+        <arguments>
+            <argument name="supportedServices" xsi:type="array">
+                <item xsi:type="const" name="catalog">Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

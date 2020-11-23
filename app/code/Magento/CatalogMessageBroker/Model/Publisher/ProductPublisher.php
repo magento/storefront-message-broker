@@ -24,11 +24,6 @@ use Psr\Log\LoggerInterface;
 class ProductPublisher
 {
     /**
-     * Service name for communication
-     */
-    const SERVICE_NAME = 'catalog';
-
-    /**
      * @var int
      */
     private $batchSize;
@@ -160,7 +155,7 @@ class ProductPublisher
         $importProductRequest->setStore($storeCode);
 
         $importResult = $this->connector
-            ->getConnection(self::SERVICE_NAME)
+            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME)
             ->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {

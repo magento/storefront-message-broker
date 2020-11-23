@@ -102,7 +102,7 @@ class RestClient
         $storefrontAppHost = $this->deploymentConfig->get(
             self::BACKOFFICE_URL_WEB_PATH
         );
-        //Fallback for url in case of monolithic instalation
+        //Fallback for url in case of monolithic installation
         if (empty($storefrontAppHost)) {
             $storefrontAppHost = $this->resolveDefaultMagentoUrl();
         }

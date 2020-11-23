@@ -15,14 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command to add gRPC connection
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class AddGrpcConnection extends Command
 {
-    const GRPC_PORT = 'grpc-port';
-    const GRPC_HOST = 'grpc-host';
-    const GRPC_CONNECTION_NAME = 'name';
+    private const GRPC_PORT = 'grpc-port';
+    private const GRPC_HOST = 'grpc-host';
+    private const GRPC_CONNECTION_NAME = 'name';
 
     /**
      * @var Writer
@@ -30,16 +28,23 @@ class AddGrpcConnection extends Command
     private $deploymentWriter;
 
     /**
-     * AddGrpcConnection constructor.
+     * @var array
+     */
+    private array $supportedServices;
+
+    /**
      * @param Writer $deploymentWriter
+     * @param array $supportedServices
      * @param string|null $name
      */
     public function __construct(
         Writer $deploymentWriter,
+        array $supportedServices = [],
         string $name = null
     ) {
         parent::__construct($name);
         $this->deploymentWriter = $deploymentWriter;
+        $this->supportedServices = $supportedServices;
     }
 
     /**
@@ -104,9 +109,12 @@ class AddGrpcConnection extends Command
             }
         }
 
-        if ($input->getOption('name') !== ProductPublisher::SERVICE_NAME) {
+        if (!\in_array($input->getOption('name'), $this->supportedServices, true)) {
             throw new \Symfony\Component\Console\Exception\RuntimeException(
-                'Service name is not correct. Please try to use "catalog"'
+                sprintf(
+                    'Service name is not correct. Supported services: %s',
+                    \implode(', ', $this->supportedServices)
+                )
             );
         }
     }
