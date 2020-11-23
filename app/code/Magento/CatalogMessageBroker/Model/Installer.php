@@ -5,6 +5,8 @@
  */
 namespace Magento\CatalogMessageBroker\Model;
 
+use Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool;
+use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Stdlib\DateTime;
 
@@ -17,6 +19,7 @@ class Installer
     const AMQP_PORT = 'amqp-port';
     const AMQP_USER = 'amqp-user';
     const AMQP_PASSWORD = 'amqp-password';
+    const GRPC_CONNECTON_TYPE = 'connection_type';
     const CONSUMER_WAIT_FOR_MESSAGES = 'consumers_wait_for_messages';
 
     /**
@@ -86,8 +89,13 @@ class Installer
      */
     public function install(array $parameters): void
     {
+        if (!isset($parameters[self::GRPC_CONNECTON_TYPE])) {
+            $parameters[self::GRPC_CONNECTON_TYPE] = Connector::DEFAULT_CONNECTION_TYPE;
+        }
+
         $config = [
             'app_env' => [
+                ConnectionPool::SERVICE_COMMUNICATION_CONNECTION_TYPE => $parameters[self::GRPC_CONNECTON_TYPE],
                 'cache_types' => $this->getCacheTypes(),
                 'queue' => [
                     'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],
@@ -104,13 +112,7 @@ class Installer
                             'web' => [
                                 'base_url' => $parameters[self::BASE_URL]
                             ]
-                        ],
-                        'grpc_client' => [
-                            'connection' => [
-                                'hostname' => $parameters[self::GRPC_HOSTNAME],
-                                'port' => $parameters[self::GRPC_PORT],
-                            ],
-                        ],
+                        ]
                     ],
                 ],
                 'install' => [

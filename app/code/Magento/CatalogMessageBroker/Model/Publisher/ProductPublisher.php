@@ -24,6 +24,11 @@ use Psr\Log\LoggerInterface;
 class ProductPublisher
 {
     /**
+     * Service name for communication
+     */
+    const SERVICE_NAME = 'catalog';
+
+    /**
      * @var int
      */
     private $batchSize;
@@ -154,7 +159,7 @@ class ProductPublisher
         $importProductRequest->setProducts($productsRequestData);
         $importProductRequest->setStore($storeCode);
 
-        $importResult = $this->connector->getConnection()->importProducts($importProductRequest);
+        $importResult = $this->connector->getConnection('catalog')->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Products import is failed: "%s"', $importResult->getMessage()));

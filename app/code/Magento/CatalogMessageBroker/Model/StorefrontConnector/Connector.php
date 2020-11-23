@@ -16,6 +16,8 @@ use Magento\CatalogStorefrontApi\Api\CatalogInterface;
  */
 class Connector
 {
+    const DEFAULT_CONNECTION_TYPE = 'in-memory';
+
     /**
      * @var ConnectionPool
      */
@@ -49,15 +51,14 @@ class Connector
     /**
      * Retrieve storefront connection.
      *
+     * @param string $connectionName
      * @return CatalogInterface
-     *
-     * @throws \InvalidArgumentException
      */
-    public function getConnection(): CatalogInterface
+    public function getConnection(string $connectionName): CatalogInterface
     {
         return $this->connectionPool->retrieveByConnectionType(
             $this->connectionType,
-            $this->configurationProviderPool->retrieveByConnectionType($this->connectionType)
+            $this->configurationProviderPool->retrieveByConnectionType($this->connectionType, $connectionName)
         );
     }
 }

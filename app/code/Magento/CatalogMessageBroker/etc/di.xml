@@ -60,7 +60,9 @@
 
     <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector">
         <arguments>
-            <argument name="connectionType" xsi:type="string">in-memory</argument>
+            <argument name="connectionType" xsi:type="init_parameter">
+                Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool::SERVICE_COMMUNICATION_CONNECTION_TYPE
+            </argument>
         </arguments>
     </type>
 
@@ -77,7 +79,7 @@
         <arguments>
             <argument name="providersMap" xsi:type="array">
                 <item name="network" xsi:type="object">
-                    Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\InProcessConfigurationProvider
+                    Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\GrpcConfigurationProvider
                 </item>
             </argument>
         </arguments>

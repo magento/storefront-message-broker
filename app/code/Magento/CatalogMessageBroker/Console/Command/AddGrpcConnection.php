@@ -5,7 +5,7 @@
  */
 namespace Magento\CatalogMessageBroker\Console\Command;
 
-use Magento\CatalogMessageBroker\Model\Installer;
+use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,28 +13,32 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to backup code base and user data
+ * Command to add gRPC connection
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class InstallCommand extends Command
+class AddGrpcConnection extends Command
 {
-    /**
-     * @var Installer
-     */
-    private $installer;
+    const GRPC_PORT = 'grpc-port';
+    const GRPC_HOST = 'grpc-host';
+    const GRPC_CONNECTION_NAME = 'name';
 
     /**
-     * TopologyInstall constructor.
-     * @param Installer $installer
+     * @var Writer
+     */
+    private $deploymentWriter;
+
+    /**
+     * AddGrpcConnection constructor.
+     * @param Writer $deploymentWriter
      * @param string|null $name
      */
     public function __construct(
-        Installer $installer,
+        Writer $deploymentWriter,
         string $name = null
     ) {
         parent::__construct($name);
-        $this->installer = $installer;
+        $this->deploymentWriter = $deploymentWriter;
     }
 
     /**
@@ -42,8 +46,8 @@ class InstallCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('catalog:message-broker:install')
-            ->setDescription('Install catalog message broker')
+        $this->setName('grpc:connection:add')
+            ->setDescription('Add gRPC connection')
             ->setDefinition($this->getOptionsList());
 
         parent::configure();
@@ -59,46 +63,22 @@ class InstallCommand extends Command
     {
         return [
             new InputOption(
-                Installer::AMQP_HOST,
+                self::GRPC_PORT,
                 null,
                 $mode,
-                'AMQP host'
+                'gRPC port'
             ),
             new InputOption(
-                Installer::AMQP_PORT,
+                self::GRPC_HOST,
                 null,
                 $mode,
-                'AMQP port'
+                'gRPC host'
             ),
             new InputOption(
-                Installer::AMQP_PASSWORD,
+                self::GRPC_CONNECTION_NAME,
                 null,
                 $mode,
-                'AMQP password'
-            ),
-            new InputOption(
-                Installer::AMQP_USER,
-                null,
-                $mode,
-                'AMQP user'
-            ),
-            new InputOption(
-                Installer::BASE_URL,
-                null,
-                $mode,
-                'Base URL'
-            ),
-            new InputOption(
-                Installer::GRPC_CONNECTON_TYPE,
-                null,
-                \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL,
-                'gRPC connection type'
-            ),
-            new InputOption(
-                Installer::CONSUMER_WAIT_FOR_MESSAGES,
-                null,
-                $mode,
-                'Consumer wait for messages'
+                'gRPC name'
             )
         ];
     }
@@ -137,12 +117,23 @@ class InstallCommand extends Command
     {
         try {
             $this->validate($input);
-            $this->installer->install($input->getOptions());
+            $this->deploymentWriter->saveConfig([
+                'app_env' => [
+                    'grpc' => [
+                        'connections' => [
+                            $input->getOption(self::GRPC_CONNECTION_NAME) => [
+                                'hostname' => $input->getOption(self::GRPC_HOST),
+                                'port' => $input->getOption(self::GRPC_PORT)
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
         } catch (\Throwable $exception) {
-            $output->writeln('Installation failed: ' . $exception->getMessage());
+            $output->writeln('Service add failed: ' . $exception->getMessage());
             return Cli::RETURN_FAILURE;
         }
-        $output->writeln('Installation complete');
+        $output->writeln('Service add complete');
 
         return Cli::RETURN_SUCCESS;
     }

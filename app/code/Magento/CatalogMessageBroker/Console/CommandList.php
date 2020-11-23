@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Magento\CatalogMessageBroker\Console;
 
+use Magento\CatalogMessageBroker\Console\Command\AddGrpcConnection;
 use Magento\CatalogMessageBroker\Console\Command\InstallCommand;
 use Magento\Framework\ObjectManagerInterface;
 
@@ -40,7 +41,8 @@ class CommandList implements \Magento\Framework\Console\CommandListInterface
     private function getCommandsClasses(): array
     {
         return [
-            InstallCommand::class
+            InstallCommand::class,
+            AddGrpcConnection::class
         ];
     }
 

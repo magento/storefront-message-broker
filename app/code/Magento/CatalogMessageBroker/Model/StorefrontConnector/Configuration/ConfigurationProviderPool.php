@@ -31,14 +31,15 @@ class ConfigurationProviderPool
      *
      * @param string $type
      *
+     * @param string $connectionName
      * @return array
      */
-    public function retrieveByConnectionType(string $type): array
+    public function retrieveByConnectionType(string $type, string $connectionName): array
     {
         if (!isset($this->providersMap[$type])) {
             return [];
         }
 
-        return $this->providersMap[$type]->provide();
+        return $this->providersMap[$type]->provide($connectionName);
     }
 }

@@ -16,7 +16,8 @@ interface ConfigurationProviderInterface
     /**
      * Retrieve connection parameters.
      *
+     * @param string $connectionName
      * @return array
      */
-    public function provide(): array;
+    public function provide(string $connectionName): array;
 }

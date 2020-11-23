@@ -34,6 +34,8 @@ This project is licensed under the OSL-3.0 License. See [LICENSE](./LICENSE.md) 
 1. Remove `.standalone` suffix  from `composer.json.standalone` and `composer.lock.standalone`
 2. In order to install project run ```composer install``` command.
 3. Than run ```bin/install microservice:install ``` with all required arguments.
+4. Specify environment variable: ```communication-type```. It should be equal either to `network` or `in-memory`.
+
 
 
 ### Stubs

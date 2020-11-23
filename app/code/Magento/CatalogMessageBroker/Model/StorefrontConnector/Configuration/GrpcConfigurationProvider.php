@@ -16,17 +16,17 @@ use Magento\Framework\Exception\RuntimeException;
 /**
  * Configuration provider class for gRPC connection.
  */
-class InProcessConfigurationProvider implements ConfigurationProviderInterface
+class GrpcConfigurationProvider implements ConfigurationProviderInterface
 {
     /**
      * gRPC configuration client hostname.
      */
-    private const GRPC_CLIENT_HOSTNAME = 'system/default/grpc_client/connection/hostname';
+    private const GRPC_CLIENT_HOSTNAME = 'grpc/connections/%s/hostname';
 
     /**
      * gRPC configuration client port.
      */
-    private const GRPC_CLIENT_PORT = 'system/default/grpc_client/connection/port';
+    private const GRPC_CLIENT_PORT = 'grpc/connections/%s/port';
 
     /**
      * @var DeploymentConfig
@@ -48,10 +48,14 @@ class InProcessConfigurationProvider implements ConfigurationProviderInterface
      * @throws FileSystemException
      * @throws RuntimeException
      */
-    public function provide(): array
+    public function provide(string $connectionName): array
     {
-        $hostname = $this->deploymentConfig->get(self::GRPC_CLIENT_HOSTNAME);
-        $port = $this->deploymentConfig->get(self::GRPC_CLIENT_PORT);
+        $hostname = $this->deploymentConfig->get(
+            sprintf(self::GRPC_CLIENT_HOSTNAME, $connectionName)
+        );
+        $port = $this->deploymentConfig->get(
+            sprintf(self::GRPC_CLIENT_PORT, $connectionName)
+        );
 
         if (!$hostname || !$port) {
             throw new \InvalidArgumentException('Incorrect gRPC connection configuration.');
