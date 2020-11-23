@@ -5,6 +5,7 @@
  */
 namespace Magento\CatalogMessageBroker\Console\Command;
 
+use Magento\CatalogMessageBroker\Model\Publisher\ProductPublisher;
 use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
@@ -102,6 +103,12 @@ class AddGrpcConnection extends Command
                 }
             }
         }
+
+        if ($input->getOption('name') !== ProductPublisher::SERVICE_NAME) {
+            throw new \Symfony\Component\Console\Exception\RuntimeException(
+                'Service name is not correct. Please try to use "catalog"'
+            );
+        }
     }
 
     /**
@@ -119,6 +126,7 @@ class AddGrpcConnection extends Command
             $this->validate($input);
             $this->deploymentWriter->saveConfig([
                 'app_env' => [
+                    'GRPC_CONNECTION_TYPE' => 'network',
                     'grpc' => [
                         'connections' => [
                             $input->getOption(self::GRPC_CONNECTION_NAME) => [
