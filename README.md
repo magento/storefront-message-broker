@@ -24,6 +24,11 @@ Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for
 ### Licensing
 This project is licensed under the OSL-3.0 License. See [LICENSE](./LICENSE.md) for more information.
 
+### Adding gRPC server configuration
+To add gRPC server configuration please run next command:
+
+`bin/command grpc:connection:add --name={some_name} --grpc-port={some-port} --grpc-host={some_host}`
+
 ### Monolith Project Installation
 1. Copy all files from different repos to magento2ce. You need to copy (commerce-data-export, catalog-storefront, message-broker)
 2. Please be aware that `app/etc/di.xml` should not be copied.
