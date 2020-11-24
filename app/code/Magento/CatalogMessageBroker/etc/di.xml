@@ -53,7 +53,7 @@
     <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector">
         <arguments>
             <argument name="connectionType" xsi:type="init_parameter">
-                Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool::SERVICE_COMMUNICATION_CONNECTION_TYPE
+                Magento\MessageBroker\Model\Installer::SERVICE_COMMUNICATION_CONNECTION_TYPE
             </argument>
         </arguments>
     </type>

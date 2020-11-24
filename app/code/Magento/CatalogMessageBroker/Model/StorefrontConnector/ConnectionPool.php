@@ -17,11 +17,6 @@ use Magento\Framework\ObjectManagerInterface;
 class ConnectionPool
 {
     /**
-     * @var string
-     */
-    const SERVICE_COMMUNICATION_CONNECTION_TYPE = 'GRPC_CONNECTION_TYPE';
-
-    /**
      * @var ObjectManagerInterface
      */
     private $objectManager;

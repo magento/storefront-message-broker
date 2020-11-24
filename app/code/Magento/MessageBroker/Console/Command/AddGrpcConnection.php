@@ -5,7 +5,6 @@
  */
 namespace Magento\MessageBroker\Console\Command;
 
-use Magento\CatalogMessageBroker\Model\Publisher\ProductPublisher;
 use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;

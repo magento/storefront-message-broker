@@ -5,13 +5,17 @@
  */
 namespace Magento\MessageBroker\Model;
 
-use Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool;
-use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
 use Magento\Framework\App\DeploymentConfig\Writer;
 use Magento\Framework\Stdlib\DateTime;
 
 class Installer
 {
+    /**
+     * @var string
+     */
+    public const SERVICE_COMMUNICATION_CONNECTION_TYPE = 'GRPC_CONNECTION_TYPE';
+    public const DEFAULT_CONNECTION_TYPE = 'in-memory';
+
     /**
      * Configuration for AMQP
      */
@@ -90,12 +94,12 @@ class Installer
     public function install(array $parameters): void
     {
         if (!isset($parameters[self::GRPC_CONNECTON_TYPE])) {
-            $parameters[self::GRPC_CONNECTON_TYPE] = Connector::DEFAULT_CONNECTION_TYPE;
+            $parameters[self::GRPC_CONNECTON_TYPE] = self::DEFAULT_CONNECTION_TYPE;
         }
 
         $config = [
             'app_env' => [
-                ConnectionPool::SERVICE_COMMUNICATION_CONNECTION_TYPE => $parameters[self::GRPC_CONNECTON_TYPE],
+                self::SERVICE_COMMUNICATION_CONNECTION_TYPE => $parameters[self::GRPC_CONNECTON_TYPE],
                 'cache_types' => $this->getCacheTypes(),
                 'queue' => [
                     'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],

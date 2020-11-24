@@ -16,8 +16,6 @@ use Magento\CatalogStorefrontApi\Api\CatalogInterface;
  */
 class Connector
 {
-    public const DEFAULT_CONNECTION_TYPE = 'in-memory';
-
     /**
      * @var ConnectionPool
      */
@@ -41,7 +39,7 @@ class Connector
     public function __construct(
         ConnectionPool $connectionPool,
         ConfigurationProviderPool $configurationProviderPool,
-        string $connectionType = self::DEFAULT_CONNECTION_TYPE
+        string $connectionType = \Magento\MessageBroker\Model\Installer::DEFAULT_CONNECTION_TYPE
     ) {
         $this->connectionPool = $connectionPool;
         $this->configurationProviderPool = $configurationProviderPool;
