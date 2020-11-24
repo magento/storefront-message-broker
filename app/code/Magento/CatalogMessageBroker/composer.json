@@ -8,8 +8,10 @@
         "php": "~7.3.0||~7.4.0",
         "magento/framework": "*",
         "magento/module-catalog-export": "*",
+        "magento/module-catalog-storefront-api": "*",
         "magento/framework-message-queue": "*",
-        "magento/message-queue": "*"
+        "magento/message-queue": "*",
+        "magento/module-message-broker": "*"
     },
     "type": "magento2-module",
     "license": [

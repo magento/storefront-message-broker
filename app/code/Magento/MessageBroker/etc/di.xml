@@ -14,7 +14,6 @@
         </arguments>
     </type>
     <!-- Stubs -->
-    <preference for="Magento\MessageQueue\Model\ResourceModel\Lock" type="Magento\MessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
     <preference for="Magento\Framework\Json\EncoderInterface" type="Magento\MessageBroker\Stub\Encoder" />
     <preference for="Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface" type="Magento\MessageBroker\Stub\CustomAttributesDefaultTypeLocator" />
 </config>

@@ -9,6 +9,8 @@
     <module name="Magento_CatalogMessageBroker">
         <sequence>
             <module name="Magento_MessageQueue" />
+            <module name="Magento_MessageBroker" />
+            <module name="Magento_CatalogStorefrontApi" />
         </sequence>
     </module>
 </config>

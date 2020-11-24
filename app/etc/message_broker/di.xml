@@ -318,4 +318,5 @@
             <argument name="serviceTypeToEntityTypeMap" xsi:type="array" />
         </arguments>
     </type>
+    <preference for="Magento\MessageQueue\Model\ResourceModel\Lock" type="Magento\MessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock" />
 </config>
