@@ -51,7 +51,7 @@ class AddGrpcConnection extends Command
      */
     protected function configure()
     {
-        $this->setName('grpc:connection:add')
+        $this->setName('message-broker:grpc-connection:add')
             ->setDescription('Add gRPC connection')
             ->setDefinition($this->getOptionsList());
 
@@ -102,7 +102,7 @@ class AddGrpcConnection extends Command
             if ($option->isValueRequired()) {
                 if (!isset($givenOptions[$option->getName()])) {
                     throw new \Symfony\Component\Console\Exception\RuntimeException(
-                        sprintf("%s option is not specified", $option->getName())
+                        sprintf("%s option is not specified. Please, specify all required options", $option->getName())
                     );
                 }
             }
@@ -129,27 +129,21 @@ class AddGrpcConnection extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $this->validate($input);
-            $this->deploymentWriter->saveConfig([
-                'app_env' => [
-                    'GRPC_CONNECTION_TYPE' => 'network',
-                    'grpc' => [
-                        'connections' => [
-                            $input->getOption(self::GRPC_CONNECTION_NAME) => [
-                                'hostname' => $input->getOption(self::GRPC_HOST),
-                                'port' => $input->getOption(self::GRPC_PORT)
-                            ]
+        $this->validate($input);
+        $this->deploymentWriter->saveConfig([
+            'app_env' => [
+                'GRPC_CONNECTION_TYPE' => 'network',
+                'grpc' => [
+                    'connections' => [
+                        $input->getOption(self::GRPC_CONNECTION_NAME) => [
+                            'hostname' => $input->getOption(self::GRPC_HOST),
+                            'port' => $input->getOption(self::GRPC_PORT)
                         ]
                     ]
                 ]
-            ]);
-        } catch (\Throwable $exception) {
-            $output->writeln('Service add failed: ' . $exception->getMessage());
-            return Cli::RETURN_FAILURE;
-        }
-        $output->writeln('Service add complete');
-
+            ]
+        ]);
+        $output->writeln('Service successfully added. "GRPC_CONNECTION_TYPE" changed to "network"');
         return Cli::RETURN_SUCCESS;
     }
 }

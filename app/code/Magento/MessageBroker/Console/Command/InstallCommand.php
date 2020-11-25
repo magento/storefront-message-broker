@@ -42,8 +42,8 @@ class InstallCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('catalog:message-broker:install')
-            ->setDescription('Install catalog message broker')
+        $this->setName('message-broker:install')
+            ->setDescription('Install Message Broker')
             ->setDefinition($this->getOptionsList());
 
         parent::configure();
@@ -117,7 +117,7 @@ class InstallCommand extends Command
             if ($option->isValueRequired()) {
                 if (!isset($givenOptions[$option->getName()])) {
                     throw new \Symfony\Component\Console\Exception\RuntimeException(
-                        sprintf("%s option is not specified", $option->getName())
+                        sprintf("%s option is not specified. Please, specify all required options", $option->getName())
                     );
                 }
             }
@@ -135,13 +135,9 @@ class InstallCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $this->validate($input);
-            $this->installer->install($input->getOptions());
-        } catch (\Throwable $exception) {
-            $output->writeln('Installation failed: ' . $exception->getMessage());
-            return Cli::RETURN_FAILURE;
-        }
+        $this->validate($input);
+        $this->installer->install($input->getOptions());
+
         $output->writeln('Installation complete');
 
         return Cli::RETURN_SUCCESS;
