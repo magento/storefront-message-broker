@@ -1,0 +1,4 @@
+magento/module-catalog-export
+magento/module-message-broker
+magento/module-catalog-message-broker
+magento/module-catalog-storefront-api

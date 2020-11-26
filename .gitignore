@@ -1,0 +1,12 @@
+/.idea
+/app/etc/config.php
+/app/etc/env.php
+composer.lock
+composer.json
+/var/*
+!/var/.htaccess
+/vendor/*
+!/vendor/.htaccess
+/generated/*
+!/generated/.htaccess
+.DS_Store
