@@ -29,7 +29,7 @@ class AddGrpcConnection extends Command
     /**
      * @var array
      */
-    private array $supportedServices;
+    private $supportedServices;
 
     /**
      * @param Writer $deploymentWriter

@@ -4,7 +4,7 @@ Message Broker application is a mediator between Catalog StoreFront Application 
 ### Message Broker Application Responsibilities
 - Listen to changes from Magento Backoffice
 - Pull data from Magento backoffice 
-- Push data with gRPC to Sstorefront service
+- Push data with gRPC to Storefront service
 
 Related repositories 
 - https://github.com/magento/commerce-data-export Extension to Magento. Provides API to Export entities from Magento to any subscribed consumer
@@ -17,7 +17,7 @@ Related repositories
 
 ## Installation
 Message Broker can be installed in 2 ways:
- - Monolithic installation: just copy files to your Magento root folder. This is only for development purposes, do not be use in the production. 
+ - Monolithic installation: just copy files to your Magento root folder. This is for development purposes only, do not use in production. 
  - Standalone installation: recommended approach, install Message Broker as a standalone installation 
 
 ### Standalone Project Installation
@@ -44,8 +44,8 @@ If at least one server added, communication mode will be automatically changed t
 ### Stubs
 In order to make Magento Framework work in a standalone installation without relying on Magento modules, there were created few stubs:
 
-- `\Magento\MessageBroker\Stub\CustomAttributesDefaultTypeLocator` On bootstrap Magento tries to load all dependencies, that are required for WebAPI. One of such depdendency is CustomAttributesDefaultTypeLocator.
-- `\Magento\MessageBroker\Stub\Encoder` Magento framework tries not only to encode, but also to translate JSON. We dont need this functionality.
+- `\Magento\MessageBroker\Stub\CustomAttributesDefaultTypeLocator` On bootstrap Magento tries to load all dependencies, that are required for WebAPI. One of such dependency is CustomAttributesDefaultTypeLocator.
+- `\Magento\MessageBroker\Stub\Encoder` Magento framework tries not only to encode, but also to translate JSON. We don't need this functionality.
 - `\Magento\MessageBroker\Stub\Amqp\ResourceModel\MessageQueueLock` Message queue lock mechanism is utilizing Magento database, in order to get rid of database, we need to get rid of MessageQueueLock
 
 ### Contributing

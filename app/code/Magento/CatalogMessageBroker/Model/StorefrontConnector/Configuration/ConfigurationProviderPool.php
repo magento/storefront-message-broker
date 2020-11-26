@@ -30,7 +30,6 @@ class ConfigurationProviderPool
      * Retrieve connection parameters by connection type.
      *
      * @param string $type
-     *
      * @param string $connectionName
      * @return array
      */

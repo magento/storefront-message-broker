@@ -58,8 +58,6 @@ class ProductPublisher
      * @param ImportProductsRequestInterfaceFactory $importProductsRequestInterfaceFactory
      * @param DataMapper $dataMapper
      * @param ImportProductDataRequestMapper $importProductDataRequestMapper
-     * @param FetchProductsInterface $fetchProducts
-     * @param ChangedEntitiesMessageBuilder $changedEntitiesMessageBuilder
      * @param Connector $connector
      * @param int $batchSize
      */
