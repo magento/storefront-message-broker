@@ -15,6 +15,7 @@ class Installer
      */
     public const SERVICE_COMMUNICATION_CONNECTION_TYPE = 'GRPC_CONNECTION_TYPE';
     public const DEFAULT_CONNECTION_TYPE = 'in-memory';
+    public const NETWORK_CONNECTION_TYPE = 'network';
 
     /**
      * Configuration for AMQP

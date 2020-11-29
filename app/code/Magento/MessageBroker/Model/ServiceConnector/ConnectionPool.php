@@ -6,9 +6,8 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\StorefrontConnector;
+namespace Magento\MessageBroker\Model\ServiceConnector;
 
-use Magento\CatalogStorefrontApi\Api\CatalogInterface;
 use Magento\Framework\ObjectManagerInterface;
 
 /**
@@ -27,7 +26,7 @@ class ConnectionPool
     private $connectionMap;
 
     /**
-     * @var CatalogInterface[]
+     * @var array
      */
     private $registry;
 
@@ -44,25 +43,28 @@ class ConnectionPool
     }
 
     /**
-     * Retrieve connection by specified type.
+     * Retrieve connection for specified service by type.
      *
+     * @param string $serviceName
      * @param string $type
      * @param array $params
      *
-     * @return CatalogInterface
+     * @return mixed
      *
-     * @throws \InvalidArgumentException
      */
-    public function retrieveByConnectionType(string $type, array $params): CatalogInterface
+    public function retrieveByConnectionType(string $serviceName, string $type, array $params)
     {
-        if (!isset($this->connectionMap[$type])) {
-            throw new \InvalidArgumentException('Invalid connection type provided.');
+        if (!isset($this->connectionMap[$serviceName][$type])) {
+            throw new \InvalidArgumentException('Invalid connection type or service name provided.');
         }
 
-        if (!isset($this->registry[$type])) {
-            $this->registry[$type] = $this->objectManager->create($this->connectionMap[$type], $params);
+        if (!isset($this->registry[$serviceName][$type])) {
+            $this->registry[$serviceName][$type] = $this->objectManager->create(
+                $this->connectionMap[$serviceName][$type],
+                $params
+            );
         }
 
-        return $this->registry[$type];
+        return $this->registry[$serviceName][$type];
     }
 }

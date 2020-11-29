@@ -18,7 +18,7 @@ class Encoder implements EncoderInterface
     /**
      * @var Json
      */
-    private Json $json;
+    private $json;
 
     /**
      * Encoder constructor.

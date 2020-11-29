@@ -13,7 +13,12 @@ namespace Magento\CatalogMessageBroker\Model;
 class ServiceConfig
 {
     /**
-     * Service name
+     * Catalog service name
      */
-    public const SERVICE_NAME = 'catalog';
+    public const SERVICE_NAME_CATALOG = 'catalog';
+
+    /**
+     * Catalog service name
+     */
+    public const SERVICE_NAME_VARIANTS = 'variants';
 }

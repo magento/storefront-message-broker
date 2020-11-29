@@ -6,12 +6,13 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration;
+namespace Magento\CatalogMessageBroker\Model\ServiceConnector\Configuration;
 
 use Grpc\ChannelCredentials;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\RuntimeException;
+use Magento\MessageBroker\Model\ServiceConnector\Configuration\ConfigurationProviderInterface;
 
 /**
  * Configuration provider class for gRPC connection.

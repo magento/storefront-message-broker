@@ -6,10 +6,10 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration;
+namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 
 /**
- * Interface for configuration providers for storefront connection.
+ * Interface for configuration providers for service connection.
  */
 interface ConfigurationProviderInterface
 {

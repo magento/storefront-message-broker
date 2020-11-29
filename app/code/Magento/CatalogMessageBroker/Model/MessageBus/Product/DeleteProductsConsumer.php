@@ -6,9 +6,9 @@
 
 namespace Magento\CatalogMessageBroker\Model\MessageBus\Product;
 
-use Magento\CatalogStorefrontApi\Api\CatalogServerInterface;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteProductsRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -22,9 +22,9 @@ class DeleteProductsConsumer implements ConsumerEventInterface
     private $deleteProductsRequestInterfaceFactory;
 
     /**
-     * @var CatalogServerInterface
+     * @var Connector
      */
-    private $catalogServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -33,16 +33,16 @@ class DeleteProductsConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteProductsRequestInterfaceFactory $deleteProductsRequestInterfaceFactory
-     * @param CatalogServerInterface $catalogServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         DeleteProductsRequestInterfaceFactory $deleteProductsRequestInterfaceFactory,
-        CatalogServerInterface $catalogServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->deleteProductsRequestInterfaceFactory = $deleteProductsRequestInterfaceFactory;
-        $this->catalogServer = $catalogServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -62,7 +62,10 @@ class DeleteProductsConsumer implements ConsumerEventInterface
         $deleteProductRequest->setStore($scope);
 
         try {
-            $importResult = $this->catalogServer->deleteProducts($deleteProductRequest);
+            $importResult = $this->connector
+                ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG)
+                ->deleteProducts($deleteProductRequest);
+
             if ($importResult->getStatus() === false) {
                 $this->logger->error(sprintf('Products deletion has failed: "%s"', $importResult->getMessage()));
             }
