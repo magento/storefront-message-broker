@@ -8,8 +8,9 @@ declare(strict_types=1);
 
 namespace Magento\ReviewsMessageBroker\Model\MessageBus\Rating;
 
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
+use Magento\ReviewsMessageBroker\Model\ServiceConfig;
 use Magento\ReviewsStorefrontApi\Api\Data\DeleteRatingsMetadataRequestMapper;
-use Magento\ReviewsStorefrontApi\Api\RatingsMetadataServerInterface;
 use Magento\ReviewsMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Psr\Log\LoggerInterface;
 
@@ -24,9 +25,9 @@ class DeleteRatingMetadataConsumer implements ConsumerEventInterface
     private $deleteRatingsMetadataRequestMapper;
 
     /**
-     * @var RatingsMetadataServerInterface
+     * @var Connector
      */
-    private $ratingsMetadataServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -35,16 +36,16 @@ class DeleteRatingMetadataConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteRatingsMetadataRequestMapper $deleteRatingsMetadataRequestMapper
-     * @param RatingsMetadataServerInterface $ratingsMetadataServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         DeleteRatingsMetadataRequestMapper $deleteRatingsMetadataRequestMapper,
-        RatingsMetadataServerInterface $ratingsMetadataServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->deleteRatingsMetadataRequestMapper = $deleteRatingsMetadataRequestMapper;
-        $this->ratingsMetadataServer = $ratingsMetadataServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -59,14 +60,15 @@ class DeleteRatingMetadataConsumer implements ConsumerEventInterface
             $ids[] = $entity->getEntityId();
         }
 
-        /* TODO use connection pool */
         $deleteRequest = $this->deleteRatingsMetadataRequestMapper->setData(
             [
                 'ratingIds' => $ids,
                 'store' => $scope,
             ]
         )->build();
-        $result = $this->ratingsMetadataServer->deleteRatingsMetadata($deleteRequest);
+
+        $result = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
+            ->deleteRatingsMetadata($deleteRequest);
 
         if ($result->getStatus() === false) {
             $this->logger->error(\sprintf('Rating metadata deletion has failed: "%s"', $result->getMessage()));

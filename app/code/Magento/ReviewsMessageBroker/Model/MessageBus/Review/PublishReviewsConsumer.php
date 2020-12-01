@@ -6,8 +6,9 @@
 
 namespace Magento\ReviewsMessageBroker\Model\MessageBus\Review;
 
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
+use Magento\ReviewsMessageBroker\Model\ServiceConfig;
 use Magento\ReviewsStorefrontApi\Api\Data\ImportReviewsRequestMapper;
-use Magento\ReviewsStorefrontApi\Api\ProductReviewsServerInterface;
 use Magento\ReviewsMessageBroker\Model\FetchReviewsInterface;
 use Magento\ReviewsMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Psr\Log\LoggerInterface;
@@ -28,9 +29,9 @@ class PublishReviewsConsumer implements ConsumerEventInterface
     private $importReviewsRequestMapper;
 
     /**
-     * @var ProductReviewsServerInterface
+     * @var Connector
      */
-    private $productReviewsServer;
+    private $connector;
 
     /**
      * @var FetchReviewsInterface
@@ -40,18 +41,18 @@ class PublishReviewsConsumer implements ConsumerEventInterface
     /**
      * @param FetchReviewsInterface $fetchReviews
      * @param ImportReviewsRequestMapper $importReviewsRequestMapper
-     * @param ProductReviewsServerInterface $productReviewsServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         FetchReviewsInterface $fetchReviews,
         ImportReviewsRequestMapper $importReviewsRequestMapper,
-        ProductReviewsServerInterface $productReviewsServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->fetchReviews = $fetchReviews;
         $this->importReviewsRequestMapper = $importReviewsRequestMapper;
-        $this->productReviewsServer = $productReviewsServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -66,9 +67,9 @@ class PublishReviewsConsumer implements ConsumerEventInterface
             $data['id'] = $data['review_id'];
         }
 
-        /* TODO use connection pool */
         $importRequest = $this->importReviewsRequestMapper->setData(['reviews' => $reviewsData])->build();
-        $importResult = $this->productReviewsServer->importProductReviews($importRequest);
+        $importResult = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
+            ->importProductReviews($importRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(\sprintf('Reviews import is failed: "%s"', $importResult->getMessage()));

@@ -6,6 +6,7 @@
 
 namespace Magento\CatalogMessageBroker\Model\MessageBus\Product;
 
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteProductsRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Magento\MessageBroker\Model\ServiceConnector\Connector;
@@ -63,7 +64,7 @@ class DeleteProductsConsumer implements ConsumerEventInterface
 
         try {
             $importResult = $this->connector
-                ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG)
+                ->getConnection(ServiceConfig::SERVICE_NAME_CATALOG)
                 ->deleteProducts($deleteProductRequest);
 
             if ($importResult->getStatus() === false) {

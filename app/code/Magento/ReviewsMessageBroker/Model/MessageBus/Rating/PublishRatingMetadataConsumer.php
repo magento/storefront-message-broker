@@ -6,8 +6,9 @@
 
 namespace Magento\ReviewsMessageBroker\Model\MessageBus\Rating;
 
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
+use Magento\ReviewsMessageBroker\Model\ServiceConfig;
 use Magento\ReviewsStorefrontApi\Api\Data\ImportRatingsMetadataRequestMapper;
-use Magento\ReviewsStorefrontApi\Api\RatingsMetadataServerInterface;
 use Magento\ReviewsMessageBroker\Model\FetchRatingsMetadataInterface;
 use Magento\ReviewsMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Psr\Log\LoggerInterface;
@@ -28,9 +29,9 @@ class PublishRatingMetadataConsumer implements ConsumerEventInterface
     private $importRatingsMetadataRequestMapper;
 
     /**
-     * @var RatingsMetadataServerInterface
+     * @var Connector
      */
-    private $ratingsMetadataServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -40,18 +41,18 @@ class PublishRatingMetadataConsumer implements ConsumerEventInterface
     /**
      * @param FetchRatingsMetadataInterface $fetchRatingsMetadata
      * @param ImportRatingsMetadataRequestMapper $importRatingsMetadataRequestMapper
-     * @param RatingsMetadataServerInterface $ratingsMetadataServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         FetchRatingsMetadataInterface $fetchRatingsMetadata,
         ImportRatingsMetadataRequestMapper $importRatingsMetadataRequestMapper,
-        RatingsMetadataServerInterface $ratingsMetadataServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->fetchRatingsMetadata = $fetchRatingsMetadata;
         $this->importRatingsMetadataRequestMapper = $importRatingsMetadataRequestMapper;
-        $this->ratingsMetadataServer = $ratingsMetadataServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -66,14 +67,15 @@ class PublishRatingMetadataConsumer implements ConsumerEventInterface
             $data['id'] = $data['rating_id'];
         }
 
-        /* TODO use connection pool */
         $importRequest = $this->importRatingsMetadataRequestMapper->setData(
             [
                 'metadata' => $ratingsMetadata,
                 'store' => $scope,
             ]
         )->build();
-        $importResult = $this->ratingsMetadataServer->importRatingsMetadata($importRequest);
+
+        $importResult = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
+            ->importRatingsMetadata($importRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(\sprintf('Ratings metadata import is failed: "%s"', $importResult->getMessage()));

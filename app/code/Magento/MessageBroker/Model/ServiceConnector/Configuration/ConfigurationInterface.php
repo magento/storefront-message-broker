@@ -11,13 +11,14 @@ namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 /**
  * Interface for configuration providers for service connection.
  */
-interface ConfigurationProviderInterface
+interface ConfigurationInterface
 {
     /**
      * Retrieve connection parameters.
      *
      * @param string $connectionName
+     *
      * @return array
      */
-    public function provide(string $connectionName): array;
+    public function retrieve(string $connectionName): array;
 }

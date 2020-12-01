@@ -8,8 +8,9 @@ declare(strict_types=1);
 
 namespace Magento\ReviewsMessageBroker\Model\MessageBus\Review;
 
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
+use Magento\ReviewsMessageBroker\Model\ServiceConfig;
 use Magento\ReviewsStorefrontApi\Api\Data\DeleteReviewsRequestMapper;
-use Magento\ReviewsStorefrontApi\Api\ProductReviewsServerInterface;
 use Magento\ReviewsMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Psr\Log\LoggerInterface;
 
@@ -24,9 +25,9 @@ class DeleteReviewsConsumer implements ConsumerEventInterface
     private $deleteReviewsRequestMapper;
 
     /**
-     * @var ProductReviewsServerInterface
+     * @var Connector
      */
-    private $productReviewsServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -35,16 +36,16 @@ class DeleteReviewsConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteReviewsRequestMapper $deleteReviewsRequestMapper
-     * @param ProductReviewsServerInterface $productReviewsServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         DeleteReviewsRequestMapper $deleteReviewsRequestMapper,
-        ProductReviewsServerInterface $productReviewsServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->deleteReviewsRequestMapper = $deleteReviewsRequestMapper;
-        $this->productReviewsServer = $productReviewsServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -59,9 +60,9 @@ class DeleteReviewsConsumer implements ConsumerEventInterface
             $ids[] = $entity->getEntityId();
         }
 
-        /* TODO use connection pool */
         $deleteRequest = $this->deleteReviewsRequestMapper->setData(['reviewIds' => $ids])->build();
-        $result = $this->productReviewsServer->deleteProductReviews($deleteRequest);
+        $result = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
+            ->deleteProductReviews($deleteRequest);
 
         if ($result->getStatus() === false) {
             $this->logger->error(\sprintf('Reviews deletion has failed: "%s"', $result->getMessage()));
