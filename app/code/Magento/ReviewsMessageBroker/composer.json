@@ -8,7 +8,8 @@
         "php": "~7.3.0||~7.4.0",
         "magento/framework": "*",
         "magento/module-reviews-storefront-api": "*",
-        "magento/module-catalog-export": "*"
+        "magento/module-catalog-export": "*",
+        "magento/module-message-broker": "*"
     },
     "type": "magento2-module",
     "license": [
