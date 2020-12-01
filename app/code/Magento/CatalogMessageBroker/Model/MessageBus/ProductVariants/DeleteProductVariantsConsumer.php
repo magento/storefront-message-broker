@@ -5,9 +5,9 @@
  */
 namespace Magento\CatalogMessageBroker\Model\MessageBus\ProductVariants;
 
-use Magento\CatalogStorefrontApi\Api\VariantServiceServerInterface;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteVariantsRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -21,9 +21,9 @@ class DeleteProductVariantsConsumer implements ConsumerEventInterface
     private $deleteVariantsRequestInterfaceFactory;
 
     /**
-     * @var VariantServiceServerInterface
+     * @var Connector
      */
-    private $variantsServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -32,16 +32,16 @@ class DeleteProductVariantsConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteVariantsRequestInterfaceFactory $deleteVariantsRequestInterfaceFactory
-     * @param VariantServiceServerInterface $variantsServer
+     * @param Connector $connector,
      * @param LoggerInterface $logger
      */
     public function __construct(
         DeleteVariantsRequestInterfaceFactory $deleteVariantsRequestInterfaceFactory,
-        VariantServiceServerInterface $variantsServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->deleteVariantsRequestInterfaceFactory = $deleteVariantsRequestInterfaceFactory;
-        $this->variantsServer = $variantsServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -59,7 +59,10 @@ class DeleteProductVariantsConsumer implements ConsumerEventInterface
         $deleteVariantsRequest->setId($ids);
 
         try {
-            $importResult = $this->variantsServer->deleteProductVariants($deleteVariantsRequest);
+            $importResult = $this->connector
+                ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_VARIANTS)
+                ->deleteProductVariants($deleteVariantsRequest);
+
             if ($importResult->getStatus() === false) {
                 $this->logger->error(
                     sprintf('Product variants deletion has failed: "%s"', $importResult->getMessage())

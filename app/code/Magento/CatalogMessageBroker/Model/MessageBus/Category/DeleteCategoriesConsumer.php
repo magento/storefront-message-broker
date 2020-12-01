@@ -6,9 +6,9 @@
 
 namespace Magento\CatalogMessageBroker\Model\MessageBus\Category;
 
-use Magento\CatalogStorefrontApi\Api\CatalogServerInterface;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteCategoriesRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -22,9 +22,9 @@ class DeleteCategoriesConsumer implements ConsumerEventInterface
     private $deleteCategoriesRequestInterfaceFactory;
 
     /**
-     * @var CatalogServerInterface
+     * @var Connector
      */
-    private $catalogServer;
+    private $connector;
 
     /**
      * @var LoggerInterface
@@ -33,16 +33,16 @@ class DeleteCategoriesConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteCategoriesRequestInterfaceFactory $deleteCategoriesRequestInterfaceFactory
-     * @param CatalogServerInterface $catalogServer
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(
         DeleteCategoriesRequestInterfaceFactory $deleteCategoriesRequestInterfaceFactory,
-        CatalogServerInterface $catalogServer,
+        Connector $connector,
         LoggerInterface $logger
     ) {
         $this->deleteCategoriesRequestInterfaceFactory = $deleteCategoriesRequestInterfaceFactory;
-        $this->catalogServer = $catalogServer;
+        $this->connector = $connector;
         $this->logger = $logger;
     }
 
@@ -60,7 +60,10 @@ class DeleteCategoriesConsumer implements ConsumerEventInterface
         $deleteCategoryRequest = $this->deleteCategoriesRequestInterfaceFactory->create();
         $deleteCategoryRequest->setCategoryIds($ids);
         $deleteCategoryRequest->setStore($scope);
-        $importResult = $this->catalogServer->deleteCategories($deleteCategoryRequest);
+
+        $importResult = $this->connector
+            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG)
+            ->deleteCategories($deleteCategoryRequest);
 
         if ($importResult->getStatus() === false) {
             $this->logger->error(sprintf('Categories deletion has failed: "%s"', $importResult->getMessage()));

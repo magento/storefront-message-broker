@@ -6,10 +6,10 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\StorefrontConnector;
+namespace Magento\MessageBroker\Model\ServiceConnector;
 
-use Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\ConfigurationProviderPool;
-use Magento\CatalogStorefrontApi\Api\CatalogInterface;
+use Magento\MessageBroker\Model\Installer;
+use Magento\MessageBroker\Model\ServiceConnector\Configuration\ConfigurationProviderPool;
 
 /**
  * Class responsible for providing connection by specified connection type
@@ -27,36 +27,39 @@ class Connector
     private $configurationProviderPool;
 
     /**
-     * @var string
+     * @var array
      */
-    private $connectionType;
+    private $connectionTypeMap;
 
     /**
      * @param ConnectionPool $connectionPool
      * @param ConfigurationProviderPool $configurationProviderPool
-     * @param string $connectionType
+     * @param array $connectionTypeMap
      */
     public function __construct(
         ConnectionPool $connectionPool,
         ConfigurationProviderPool $configurationProviderPool,
-        string $connectionType = \Magento\MessageBroker\Model\Installer::DEFAULT_CONNECTION_TYPE
+        array $connectionTypeMap = []
     ) {
         $this->connectionPool = $connectionPool;
         $this->configurationProviderPool = $configurationProviderPool;
-        $this->connectionType = $connectionType;
+        $this->connectionTypeMap = $connectionTypeMap;
     }
 
     /**
-     * Retrieve storefront connection.
+     * Retrieve service connection.
      *
      * @param string $connectionName
-     * @return CatalogInterface
+     * @return mixed
      */
-    public function getConnection(string $connectionName): CatalogInterface
+    public function getConnection(string $connectionName)
     {
+        $connectionType = $this->connectionTypeMap[$connectionName] ?? Installer::DEFAULT_CONNECTION_TYPE;
+
         return $this->connectionPool->retrieveByConnectionType(
-            $this->connectionType,
-            $this->configurationProviderPool->retrieveByConnectionType($this->connectionType, $connectionName)
+            $connectionName,
+            $connectionType,
+            $this->configurationProviderPool->retrieveByConnectionType($connectionType, $connectionName)
         );
     }
 }

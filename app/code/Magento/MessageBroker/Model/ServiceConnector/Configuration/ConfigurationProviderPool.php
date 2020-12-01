@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration;
+namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 
 /**
  * Pool of configuration providers for storefront connection.
@@ -35,10 +35,10 @@ class ConfigurationProviderPool
      */
     public function retrieveByConnectionType(string $type, string $connectionName): array
     {
-        if (!isset($this->providersMap[$type])) {
+        if (!isset($this->providersMap[$connectionName][$type])) {
             return [];
         }
 
-        return $this->providersMap[$type]->provide($connectionName);
+        return $this->providersMap[$connectionName][$type]->provide($connectionName);
     }
 }

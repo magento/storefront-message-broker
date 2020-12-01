@@ -9,7 +9,7 @@ namespace Magento\CatalogMessageBroker\Model\MessageBus\Category;
 use Magento\CatalogExport\Event\Data\Entity;
 use Magento\CatalogMessageBroker\Model\Converter\AttributeCodesConverter;
 use Magento\CatalogMessageBroker\Model\FetchCategoriesInterface;
-use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportCategoriesRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportCategoryDataRequestInterface;
@@ -193,7 +193,7 @@ class PublishCategoriesConsumer implements ConsumerEventInterface
         $importCategoriesRequest->setStore($storeCode);
 
         $importResult = $this->connector
-            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME)
+            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG)
             ->importCategories($importCategoriesRequest);
 
         if ($importResult->getStatus() === false) {
