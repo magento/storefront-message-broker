@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 
-use Grpc\ChannelCredentials;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\RuntimeException;
@@ -64,7 +63,7 @@ class GrpcConfiguration implements ConfigurationInterface
         return [
             'hostname' => \sprintf('%s:%s', $hostname, $port),
             'options' => [
-                'credentials' => ChannelCredentials::createInsecure(),
+                'credentials' => null, // \Grpc\ChannelCredentials::createInsecure()
             ],
         ];
     }
