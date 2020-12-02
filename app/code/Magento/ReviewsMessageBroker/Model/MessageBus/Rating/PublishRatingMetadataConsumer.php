@@ -74,7 +74,8 @@ class PublishRatingMetadataConsumer implements ConsumerEventInterface
             ]
         )->build();
 
-        $importResult = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
+        $importResult = $this->connector
+            ->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
             ->importRatingsMetadata($importRequest);
 
         if ($importResult->getStatus() === false) {

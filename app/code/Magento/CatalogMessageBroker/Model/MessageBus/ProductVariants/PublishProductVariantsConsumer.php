@@ -48,7 +48,7 @@ class PublishProductVariantsConsumer implements ConsumerEventInterface
     /**
      * @param LoggerInterface $logger
      * @param FetchProductVariantsInterface $fetchProductVariants
-     * @param Connector $connector,
+     * @param Connector $connector
      * @param ImportVariantsRequestInterfaceFactory $importVariantsRequestInterfaceFactory
      * @param ProductVariantImportMapper $productVariantImportMapper
      */

@@ -33,7 +33,7 @@ class DeleteProductVariantsConsumer implements ConsumerEventInterface
 
     /**
      * @param DeleteVariantsRequestInterfaceFactory $deleteVariantsRequestInterfaceFactory
-     * @param Connector $connector,
+     * @param Connector $connector
      * @param LoggerInterface $logger
      */
     public function __construct(

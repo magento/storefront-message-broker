@@ -61,7 +61,8 @@ class DeleteReviewsConsumer implements ConsumerEventInterface
         }
 
         $deleteRequest = $this->deleteReviewsRequestMapper->setData(['reviewIds' => $ids])->build();
-        $result = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
+        $result = $this->connector
+            ->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
             ->deleteProductReviews($deleteRequest);
 
         if ($result->getStatus() === false) {

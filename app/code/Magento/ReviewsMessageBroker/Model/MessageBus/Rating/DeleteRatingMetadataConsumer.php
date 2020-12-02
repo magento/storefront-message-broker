@@ -67,7 +67,8 @@ class DeleteRatingMetadataConsumer implements ConsumerEventInterface
             ]
         )->build();
 
-        $result = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
+        $result = $this->connector
+            ->getConnection(ServiceConfig::SERVICE_NAME_RATINGS_METADATA)
             ->deleteRatingsMetadata($deleteRequest);
 
         if ($result->getStatus() === false) {

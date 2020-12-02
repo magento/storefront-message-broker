@@ -68,7 +68,8 @@ class PublishReviewsConsumer implements ConsumerEventInterface
         }
 
         $importRequest = $this->importReviewsRequestMapper->setData(['reviews' => $reviewsData])->build();
-        $importResult = $this->connector->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
+        $importResult = $this->connector
+            ->getConnection(ServiceConfig::SERVICE_NAME_REVIEWS)
             ->importProductReviews($importRequest);
 
         if ($importResult->getStatus() === false) {
