@@ -16,7 +16,7 @@ class MappingProvider implements MappingProviderInterface
     /**
      * @var \Magento\Framework\Config\DataInterface
      */
-    protected $dataStorage;
+    private $dataStorage;
 
     /**
      * @param \Magento\Framework\Config\DataInterface $dataStorage
