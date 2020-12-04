@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import;
 
-use Magento\ConfigurationImportMessageBroker\Event\Data\Config;
+use Magento\ConfigurationDataExporter\Event\Data\Config;
 
 /**
  * Process import of configuration

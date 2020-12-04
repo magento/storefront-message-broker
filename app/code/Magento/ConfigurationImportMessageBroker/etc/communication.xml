@@ -6,5 +6,5 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
-    <topic name="system.configuration.export" request="Magento\ConfigurationImportMessageBroker\Event\Data\ChangedConfig"/>
+    <topic name="system.configuration.export" request="Magento\ConfigurationDataExporter\Event\Data\ChangedConfig"/>
 </config>

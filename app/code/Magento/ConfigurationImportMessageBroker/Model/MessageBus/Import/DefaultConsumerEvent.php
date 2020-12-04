@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import;
 
-use Magento\ConfigurationImportMessageBroker\Event\Data\Config;
+use Magento\ConfigurationDataExporter\Event\Data\Config;
 use Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\MappingProviderInterface;
 use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Psr\Log\LoggerInterface;

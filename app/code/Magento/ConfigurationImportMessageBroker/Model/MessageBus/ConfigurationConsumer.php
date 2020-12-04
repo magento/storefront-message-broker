@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Magento\ConfigurationImportMessageBroker\Model\MessageBus;
 
-use Magento\ConfigurationImportMessageBroker\Event\Data\Config;
-use Magento\ConfigurationImportMessageBroker\Event\Data\ChangedConfig;
+use Magento\ConfigurationDataExporter\Event\Data\Config;
+use Magento\ConfigurationDataExporter\Event\Data\ChangedConfig;
 use Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import\ConsumerEventInterfaceFactory;
 use Psr\Log\LoggerInterface;
 
@@ -43,7 +43,7 @@ class ConfigurationConsumer
     /**
      * Process message
      *
-     * @param \Magento\ConfigurationImportMessageBroker\Event\Data\ChangedConfig $message
+     * @param \Magento\ConfigurationDataExporter\Event\Data\ChangedConfig $message
      * @return void
      */
     public function processMessage(ChangedConfig $message): void

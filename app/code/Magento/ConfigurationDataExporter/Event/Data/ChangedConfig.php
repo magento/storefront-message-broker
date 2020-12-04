@@ -26,8 +26,8 @@ class ChangedConfig
     private $meta;
 
     /**
-     * @param \Magento\ConfigurationDataExporter\Event\Data\Meta $meta
-     * @param \Magento\ConfigurationDataExporter\Event\Data\Data $data
+     * @param Meta $meta
+     * @param Data $data
      */
     public function __construct(Meta $meta, Data $data)
     {
