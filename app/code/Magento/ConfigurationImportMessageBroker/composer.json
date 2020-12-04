@@ -7,7 +7,6 @@
     "require": {
         "php": "~7.3.0||~7.4.0",
         "magento/framework": "*",
-        "magento/framework-message-queue": "*",
         "magento/module-message-broker": "*",
         "magento/module-configuration-data-exporter": "*"
     },
