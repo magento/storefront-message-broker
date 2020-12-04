@@ -50,7 +50,6 @@ class ConnectionPool
      * @param array $params
      *
      * @return mixed
-     *
      */
     public function retrieveByConnectionType(string $serviceName, string $type, array $params)
     {
