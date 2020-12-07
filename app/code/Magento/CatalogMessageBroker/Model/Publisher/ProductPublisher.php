@@ -6,8 +6,6 @@
 
 namespace Magento\CatalogMessageBroker\Model\Publisher;
 
-use Magento\CatalogExport\Model\ChangedEntitiesMessageBuilder;
-use Magento\CatalogMessageBroker\Model\FetchProductsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\Product\PublishProductsConsumer;
 use Magento\CatalogMessageBroker\Model\DataMapper;
 use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
