@@ -1,1 +1,1 @@
-app/message_broker_autoload.php
+message_broker_autoload.php
