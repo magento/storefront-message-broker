@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\ReviewsMessageBroker\Model\FetchReviewsInterface"
+                type="Magento\ReviewsMessageBroker\Model\FetchReviews"/>
+    <preference for="Magento\ReviewsMessageBroker\Model\FetchRatingsMetadataInterface"
+                type="Magento\ReviewsMessageBroker\Model\FetchRatingsMetadata"/>
+
+    <type name="Magento\ReviewsMessageBroker\Model\MessageBus\ConsumerEventInterfaceFactory">
+        <arguments>
+            <argument name="eventTypeMap" xsi:type="array">
+                <item name="reviews_updated" xsi:type="string">
+                    Magento\ReviewsMessageBroker\Model\MessageBus\Review\PublishReviewsConsumer
+                </item>
+                <item name="reviews_deleted" xsi:type="string">
+                    Magento\ReviewsMessageBroker\Model\MessageBus\Review\DeleteReviewsConsumer
+                </item>
+                <item name="rating_metadata_updated" xsi:type="string">
+                    Magento\ReviewsMessageBroker\Model\MessageBus\Rating\PublishRatingMetadataConsumer
+                </item>
+                <item name="rating_metadata_deleted" xsi:type="string">
+                    Magento\ReviewsMessageBroker\Model\MessageBus\Rating\DeleteRatingMetadataConsumer
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\MessageBroker\Model\ServiceConnector\ConnectionPool">
+        <arguments>
+            <argument name="connectionMap" xsi:type="array">
+                <item xsi:type="array" name="reviews">
+                    <item name="network" xsi:type="string">
+                        Magento\ReviewsStorefrontApi\Api\ProductReviews
+                    </item>
+                    <item name="in-memory" xsi:type="string">
+                        Magento\ReviewsStorefrontApi\Api\InMemoryProductReviews
+                    </item>
+                </item>
+                <item xsi:type="array" name="ratings_metadata">
+                    <item name="network" xsi:type="string">
+                        Magento\ReviewsStorefrontApi\Api\RatingsMetadata
+                    </item>
+                    <item name="in-memory" xsi:type="string">
+                        Magento\ReviewsStorefrontApi\Api\InMemoryRatingsMetadata
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\MessageBroker\Console\Command\AddGrpcConnection">
+        <arguments>
+            <argument name="supportedServices" xsi:type="array">
+                <item xsi:type="const" name="reviews">
+                    Magento\ReviewsMessageBroker\Model\ServiceConfig::SERVICE_NAME_REVIEWS
+                </item>
+                <item xsi:type="const" name="ratings_metadata">
+                    Magento\ReviewsMessageBroker\Model\ServiceConfig::SERVICE_NAME_RATINGS_METADATA
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

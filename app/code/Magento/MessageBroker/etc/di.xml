@@ -13,6 +13,26 @@
             </argument>
         </arguments>
     </type>
+
+    <!-- Service connector configuration -->
+    <type name="Magento\MessageBroker\Model\ServiceConnector\Connector">
+        <arguments>
+            <argument name="connectionType" xsi:type="init_parameter">
+                Magento\MessageBroker\Model\Installer::SERVICE_COMMUNICATION_CONNECTION_TYPE
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\MessageBroker\Model\ServiceConnector\Configuration\ConfigurationProvider">
+        <arguments>
+            <argument name="providersMap" xsi:type="array">
+                <item name="network" xsi:type="object">
+                    Magento\MessageBroker\Model\ServiceConnector\Configuration\GrpcConfiguration
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- Stubs -->
     <preference for="Magento\Framework\Json\EncoderInterface" type="Magento\MessageBroker\Stub\Encoder" />
     <preference for="Magento\Framework\Webapi\CustomAttributeTypeLocatorInterface" type="Magento\MessageBroker\Stub\CustomAttributesDefaultTypeLocator" />

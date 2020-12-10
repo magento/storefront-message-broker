@@ -8,10 +8,11 @@ namespace Magento\CatalogMessageBroker\Model\MessageBus\ProductVariants;
 
 use Magento\CatalogMessageBroker\Model\FetchProductVariantsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
 use Magento\CatalogStorefrontApi\Api\Data\ImportVariantsRequestInterfaceFactory;
 use Magento\CatalogStorefrontApi\Api\Data\ProductVariantImportInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ProductVariantImportMapper;
-use Magento\CatalogStorefrontApi\Api\VariantServiceServerInterface;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -30,9 +31,9 @@ class PublishProductVariantsConsumer implements ConsumerEventInterface
     private $fetchProductVariants;
 
     /**
-     * @var VariantServiceServerInterface
+     * @var Connector
      */
-    private $variantService;
+    private $connector;
 
     /**
      * @var ImportVariantsRequestInterfaceFactory
@@ -47,20 +48,20 @@ class PublishProductVariantsConsumer implements ConsumerEventInterface
     /**
      * @param LoggerInterface $logger
      * @param FetchProductVariantsInterface $fetchProductVariants
-     * @param VariantServiceServerInterface $variantService
+     * @param Connector $connector
      * @param ImportVariantsRequestInterfaceFactory $importVariantsRequestInterfaceFactory
      * @param ProductVariantImportMapper $productVariantImportMapper
      */
     public function __construct(
         LoggerInterface $logger,
         FetchProductVariantsInterface $fetchProductVariants,
-        VariantServiceServerInterface $variantService,
+        Connector $connector,
         ImportVariantsRequestInterfaceFactory $importVariantsRequestInterfaceFactory,
         ProductVariantImportMapper $productVariantImportMapper
     ) {
         $this->logger = $logger;
         $this->fetchProductVariants = $fetchProductVariants;
-        $this->variantService = $variantService;
+        $this->connector = $connector;
         $this->importVariantsRequestInterfaceFactory = $importVariantsRequestInterfaceFactory;
         $this->productVariantImportMapper = $productVariantImportMapper;
     }
@@ -108,7 +109,10 @@ class PublishProductVariantsConsumer implements ConsumerEventInterface
         $importVariantsRequest->setVariants($variants);
 
         try {
-            $importResult = $this->variantService->importProductVariants($importVariantsRequest);
+            $importResult = $this->connector
+                ->getConnection(ServiceConfig::SERVICE_NAME_VARIANTS)
+                ->importProductVariants($importVariantsRequest);
+
             if ($importResult->getStatus() === false) {
                 $this->logger->error(sprintf('Product variants import failed: "%s"', $importResult->getMessage()));
             }

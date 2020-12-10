@@ -8,7 +8,8 @@ namespace Magento\CatalogMessageBroker\Model\Publisher;
 
 use Magento\CatalogMessageBroker\Model\MessageBus\Product\PublishProductsConsumer;
 use Magento\CatalogMessageBroker\Model\DataMapper;
-use Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector;
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
+use Magento\MessageBroker\Model\ServiceConnector\Connector;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductDataRequestMapper;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ImportProductsRequestInterfaceFactory;
@@ -151,7 +152,7 @@ class ProductPublisher
         $importProductRequest->setStore($storeCode);
 
         $importResult = $this->connector
-            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME)
+            ->getConnection(ServiceConfig::SERVICE_NAME_CATALOG)
             ->importProducts($importProductRequest);
 
         if ($importResult->getStatus() === false) {

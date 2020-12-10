@@ -50,37 +50,26 @@
         </arguments>
     </type>
 
-    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Connector">
-        <arguments>
-            <argument name="connectionType" xsi:type="init_parameter">
-                Magento\MessageBroker\Model\Installer::SERVICE_COMMUNICATION_CONNECTION_TYPE
-            </argument>
-        </arguments>
-    </type>
-
-    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\ConnectionPool">
+    <type name="Magento\MessageBroker\Model\ServiceConnector\ConnectionPool">
         <arguments>
             <argument name="connectionMap" xsi:type="array">
-                <item name="network" xsi:type="string">Magento\CatalogStorefrontApi\Api\Catalog</item>
-                <item name="in-memory" xsi:type="string">Magento\CatalogStorefrontApi\Api\InMemoryCatalog</item>
-            </argument>
-        </arguments>
-    </type>
-
-    <type name="Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\ConfigurationProviderPool">
-        <arguments>
-            <argument name="providersMap" xsi:type="array">
-                <item name="network" xsi:type="object">
-                    Magento\CatalogMessageBroker\Model\StorefrontConnector\Configuration\GrpcConfigurationProvider
+                <item xsi:type="array" name="catalog">
+                    <item name="network" xsi:type="string">Magento\CatalogStorefrontApi\Api\Catalog</item>
+                    <item name="in-memory" xsi:type="string">Magento\CatalogStorefrontApi\Api\InMemoryCatalog</item>
+                </item>
+                <item xsi:type="array" name="variants">
+                    <item name="network" xsi:type="string">Magento\CatalogStorefrontApi\Api\VariantService</item>
+                    <item name="in-memory" xsi:type="string">Magento\CatalogStorefrontApi\Api\InMemoryVariantService</item>
                 </item>
             </argument>
         </arguments>
     </type>
 
-    <type name="\Magento\MessageBroker\Console\Command\AddGrpcConnection">
+    <type name="Magento\MessageBroker\Console\Command\AddGrpcConnection">
         <arguments>
             <argument name="supportedServices" xsi:type="array">
-                <item xsi:type="const" name="catalog">Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME</item>
+                <item xsi:type="const" name="catalog">Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG</item>
+                <item xsi:type="const" name="variants">Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_VARIANTS</item>
             </argument>
         </arguments>
     </type>
