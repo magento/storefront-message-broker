@@ -5,6 +5,7 @@
  */
 namespace Magento\CatalogMessageBroker\Model\MessageBus\ProductVariants;
 
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteVariantsRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Magento\MessageBroker\Model\ServiceConnector\Connector;
@@ -60,7 +61,7 @@ class DeleteProductVariantsConsumer implements ConsumerEventInterface
 
         try {
             $importResult = $this->connector
-                ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_VARIANTS)
+                ->getConnection(ServiceConfig::SERVICE_NAME_VARIANTS)
                 ->deleteProductVariants($deleteVariantsRequest);
 
             if ($importResult->getStatus() === false) {

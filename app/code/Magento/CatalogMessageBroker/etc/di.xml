@@ -50,19 +50,6 @@
         </arguments>
     </type>
 
-    <type name="Magento\MessageBroker\Model\ServiceConnector\Connector">
-        <arguments>
-            <argument name="connectionTypeMap" xsi:type="array">
-                <item xsi:type="const" name="catalog">
-                    Magento\MessageBroker\Model\Installer::DEFAULT_CONNECTION_TYPE
-                </item>
-                <item xsi:type="const" name="variants">
-                    Magento\MessageBroker\Model\Installer::DEFAULT_CONNECTION_TYPE
-                </item>
-            </argument>
-        </arguments>
-    </type>
-
     <type name="Magento\MessageBroker\Model\ServiceConnector\ConnectionPool">
         <arguments>
             <argument name="connectionMap" xsi:type="array">
@@ -78,24 +65,7 @@
         </arguments>
     </type>
 
-    <type name="Magento\MessageBroker\Model\ServiceConnector\Configuration\ConfigurationProviderPool">
-        <arguments>
-            <argument name="providersMap" xsi:type="array">
-                <item xsi:type="array" name="catalog">
-                    <item name="network" xsi:type="object">
-                        Magento\CatalogMessageBroker\Model\ServiceConnector\Configuration\GrpcConfigurationProvider
-                    </item>
-                </item>
-                <item xsi:type="array" name="variants">
-                    <item name="network" xsi:type="object">
-                        Magento\CatalogMessageBroker\Model\ServiceConnector\Configuration\GrpcConfigurationProvider
-                    </item>
-                </item>
-            </argument>
-        </arguments>
-    </type>
-
-    <type name="\Magento\MessageBroker\Console\Command\AddGrpcConnection">
+    <type name="Magento\MessageBroker\Console\Command\AddGrpcConnection">
         <arguments>
             <argument name="supportedServices" xsi:type="array">
                 <item xsi:type="const" name="catalog">Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG</item>

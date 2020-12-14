@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 
 /**
- * Pool of configuration providers for storefront connection.
+ * Configuration provider for storefront connection.
  */
-class ConfigurationProviderPool
+class ConfigurationProvider
 {
     /**
      * @var array
@@ -19,7 +19,7 @@ class ConfigurationProviderPool
     private $providersMap;
 
     /**
-     * @param ConfigurationProviderInterface[] $providersMap
+     * @param ConfigurationInterface[] $providersMap
      */
     public function __construct(array $providersMap = [])
     {
@@ -27,18 +27,19 @@ class ConfigurationProviderPool
     }
 
     /**
-     * Retrieve connection parameters by connection type.
+     * Retrieve connection parameters.
      *
      * @param string $type
      * @param string $connectionName
+     *
      * @return array
      */
-    public function retrieveByConnectionType(string $type, string $connectionName): array
+    public function provide(string $type, string $connectionName): array
     {
-        if (!isset($this->providersMap[$connectionName][$type])) {
+        if (!isset($this->providersMap[$type])) {
             return [];
         }
 
-        return $this->providersMap[$connectionName][$type]->provide($connectionName);
+        return $this->providersMap[$type]->retrieve($connectionName);
     }
 }

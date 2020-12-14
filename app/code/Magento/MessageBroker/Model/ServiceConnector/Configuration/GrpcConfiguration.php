@@ -6,18 +6,16 @@
 
 declare(strict_types=1);
 
-namespace Magento\CatalogMessageBroker\Model\ServiceConnector\Configuration;
+namespace Magento\MessageBroker\Model\ServiceConnector\Configuration;
 
-use Grpc\ChannelCredentials;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\RuntimeException;
-use Magento\MessageBroker\Model\ServiceConnector\Configuration\ConfigurationProviderInterface;
 
 /**
  * Configuration provider class for gRPC connection.
  */
-class GrpcConfigurationProvider implements ConfigurationProviderInterface
+class GrpcConfiguration implements ConfigurationInterface
 {
     /**
      * gRPC configuration client hostname.
@@ -49,7 +47,7 @@ class GrpcConfigurationProvider implements ConfigurationProviderInterface
      * @throws FileSystemException
      * @throws RuntimeException
      */
-    public function provide(string $connectionName): array
+    public function retrieve(string $connectionName): array
     {
         $hostname = $this->deploymentConfig->get(
             sprintf(self::GRPC_CLIENT_HOSTNAME, $connectionName)
@@ -65,7 +63,7 @@ class GrpcConfigurationProvider implements ConfigurationProviderInterface
         return [
             'hostname' => \sprintf('%s:%s', $hostname, $port),
             'options' => [
-                'credentials' => ChannelCredentials::createInsecure(),
+                'credentials' => null, // \Grpc\ChannelCredentials::createInsecure()
             ],
         ];
     }

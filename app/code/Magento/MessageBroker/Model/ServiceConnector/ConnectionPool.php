@@ -50,8 +50,10 @@ class ConnectionPool
      * @param array $params
      *
      * @return mixed
+     *
+     * @throws \InvalidArgumentException
      */
-    public function retrieveByConnectionType(string $serviceName, string $type, array $params)
+    public function retrieve(string $serviceName, string $type, array $params)
     {
         if (!isset($this->connectionMap[$serviceName][$type])) {
             throw new \InvalidArgumentException('Invalid connection type or service name provided.');

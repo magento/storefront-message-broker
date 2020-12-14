@@ -8,6 +8,7 @@ namespace Magento\CatalogMessageBroker\Model\MessageBus\ProductVariants;
 
 use Magento\CatalogMessageBroker\Model\FetchProductVariantsInterface;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
 use Magento\CatalogStorefrontApi\Api\Data\ImportVariantsRequestInterfaceFactory;
 use Magento\CatalogStorefrontApi\Api\Data\ProductVariantImportInterface;
 use Magento\CatalogStorefrontApi\Api\Data\ProductVariantImportMapper;
@@ -109,7 +110,7 @@ class PublishProductVariantsConsumer implements ConsumerEventInterface
 
         try {
             $importResult = $this->connector
-                ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_VARIANTS)
+                ->getConnection(ServiceConfig::SERVICE_NAME_VARIANTS)
                 ->importProductVariants($importVariantsRequest);
 
             if ($importResult->getStatus() === false) {

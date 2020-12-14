@@ -6,6 +6,7 @@
 
 namespace Magento\CatalogMessageBroker\Model\MessageBus\Category;
 
+use Magento\CatalogMessageBroker\Model\ServiceConfig;
 use Magento\CatalogStorefrontApi\Api\Data\DeleteCategoriesRequestInterfaceFactory;
 use Magento\CatalogMessageBroker\Model\MessageBus\ConsumerEventInterface;
 use Magento\MessageBroker\Model\ServiceConnector\Connector;
@@ -62,7 +63,7 @@ class DeleteCategoriesConsumer implements ConsumerEventInterface
         $deleteCategoryRequest->setStore($scope);
 
         $importResult = $this->connector
-            ->getConnection(\Magento\CatalogMessageBroker\Model\ServiceConfig::SERVICE_NAME_CATALOG)
+            ->getConnection(ServiceConfig::SERVICE_NAME_CATALOG)
             ->deleteCategories($deleteCategoryRequest);
 
         if ($importResult->getStatus() === false) {
