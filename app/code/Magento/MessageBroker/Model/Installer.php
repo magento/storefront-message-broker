@@ -6,7 +6,10 @@
 namespace Magento\MessageBroker\Model;
 
 use Magento\Framework\App\DeploymentConfig\Writer;
+use Magento\Framework\Config\Data\ConfigData;
+use Magento\Framework\Setup\Option\AbstractConfigOption;
 use Magento\Framework\Stdlib\DateTime;
+use Symfony\Component\Console\Input\InputDefinition;
 
 class Installer
 {
@@ -25,6 +28,20 @@ class Installer
     const AMQP_PASSWORD = 'amqp-password';
     const GRPC_CONNECTON_TYPE = 'connection_type';
     const CONSUMER_WAIT_FOR_MESSAGES = 'consumers_wait_for_messages';
+
+    /**
+     * Configuration for Cache Redis
+     */
+    const CONFIG_VALUE_CACHE_REDIS = \Magento\Framework\Cache\Backend\Redis::class;
+    const INPUT_VALUE_CACHE_REDIS = 'redis';
+    const INPUT_KEY_CACHE_BACKEND = 'cache-backend';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_SERVER = 'cache-backend-redis-server';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_DATABASE = 'cache-backend-redis-db';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_PORT = 'cache-backend-redis-port';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_PASSWORD = 'cache-backend-redis-password';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_COMPRESS_DATA = 'cache-backend-redis-compress-data';
+    const INPUT_KEY_CACHE_BACKEND_REDIS_COMPRESSION_LIB = 'cache-backend-redis-compression-lib';
+    const INPUT_KEY_CACHE_ID_PREFIX = 'cache-id-prefix';
 
     /**
      * Other settings
@@ -85,36 +102,53 @@ class Installer
         ];
     }
 
+    private function getCacheStorage(array $givenOptions, $definitionOptions): array
+    {
+        $configData = new ConfigData('app_env');
+        $cacheOptions = array_filter($definitionOptions->getOptions(), function($object) {
+            return $object instanceof AbstractConfigOption;
+        });
+        foreach ($cacheOptions as $option) {
+            $optionData = $givenOptions[$option->getName()];
+            if ($option->getName() === self::INPUT_KEY_CACHE_BACKEND
+                && $optionData == self::INPUT_VALUE_CACHE_REDIS) {
+                $optionData = self::CONFIG_VALUE_CACHE_REDIS;
+            }
+            $configData->set($option->getConfigPath(), $optionData);
+        }
+        return $configData->getData();
+    }
+
     /**
      * Create env.php file configuration
-     *
-     * @param array $parameters
+     * @param array $givenOptions
+     * @param InputDefinition $definitionOptions
      * @throws \Magento\Framework\Exception\FileSystemException
      */
-    public function install(array $parameters): void
+    public function install(array $givenOptions, InputDefinition $definitionOptions): void
     {
-        if (!isset($parameters[self::GRPC_CONNECTON_TYPE])) {
-            $parameters[self::GRPC_CONNECTON_TYPE] = self::DEFAULT_CONNECTION_TYPE;
+        if (!isset($givenOptions[self::GRPC_CONNECTON_TYPE])) {
+            $givenOptions[self::GRPC_CONNECTON_TYPE] = self::DEFAULT_CONNECTION_TYPE;
         }
 
         $config = [
             'app_env' => [
-                self::SERVICE_COMMUNICATION_CONNECTION_TYPE => $parameters[self::GRPC_CONNECTON_TYPE],
+                self::SERVICE_COMMUNICATION_CONNECTION_TYPE => $givenOptions[self::GRPC_CONNECTON_TYPE],
                 'cache_types' => $this->getCacheTypes(),
                 'queue' => [
-                    'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],
+                    'consumers_wait_for_messages' => $givenOptions[self::CONSUMER_WAIT_FOR_MESSAGES],
                     'amqp' => [
-                        'host' => $parameters[self::AMQP_HOST],
-                        'user' => $parameters[self::AMQP_USER],
-                        'password' => $parameters[self::AMQP_PASSWORD],
-                        'port' => $parameters[self::AMQP_PORT],
+                        'host' => $givenOptions[self::AMQP_HOST],
+                        'user' => $givenOptions[self::AMQP_USER],
+                        'password' => $givenOptions[self::AMQP_PASSWORD],
+                        'port' => $givenOptions[self::AMQP_PORT],
                     ]
                 ],
                 'system' => [
                     'default' => [
                         'backoffice' => [
                             'web' => [
-                                'base_url' => $parameters[self::BASE_URL]
+                                'base_url' => $givenOptions[self::BASE_URL]
                             ]
                         ]
                     ],
@@ -127,6 +161,10 @@ class Installer
                 'modules' => $this->modulesCollector->execute()
             ]
         ];
+
+        if (!empty($givenOptions[self::INPUT_KEY_CACHE_BACKEND])) {
+            $config['app_env'] = array_merge($config['app_env'], $this->getCacheStorage($givenOptions, $definitionOptions));
+        }
 
         $this->deploymentConfigWriter->saveConfig($config);
     }
