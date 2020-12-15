@@ -1,1 +1,1 @@
-app/code/Magento/CatalogMessageBroker/Model/ServiceConnector/Configuration/GrpcConfigurationProvider.php
+app/code/Magento/MessageBroker/Model/ServiceConnector/Configuration/GrpcConfiguration.php
