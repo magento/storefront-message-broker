@@ -3,4 +3,6 @@ magento/module-message-broker
 magento/module-catalog-message-broker
 magento/module-reviews-message-broker
 magento/module-catalog-storefront-api
+magento/module-configuration-import-message-broker
+magento/module-configuration-data-exporter
 magento/module-reviews-storefront-api

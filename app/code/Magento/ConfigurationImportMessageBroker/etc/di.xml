@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\MappingProviderInterface"
+                type="Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\MappingProvider" />
+    <type name="Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\Mapping\Reader">
+         <arguments>
+             <argument name="fileName" xsi:type="string">configuration_import_mapping.xml</argument>
+             <argument name="converter" xsi:type="object">Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\Mapping\Converter</argument>
+             <argument name="schemaLocator" xsi:type="object">Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\Mapping\SchemaLocator</argument>
+         </arguments>
+     </type>
+
+     <virtualType name="configurationImportMappingConfigDataStorage" type="Magento\Framework\Config\Data">
+         <arguments>
+             <argument name="reader" xsi:type="object">Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\Mapping\Reader</argument>
+             <argument name="cacheId" xsi:type="string">configuration_import_mapping</argument>
+         </arguments>
+     </virtualType>
+
+     <type name="Magento\ConfigurationImportMessageBroker\Model\Configuration\Import\MappingProvider">
+         <arguments>
+             <argument name="dataStorage" xsi:type="object">configurationImportMappingConfigDataStorage</argument>
+         </arguments>
+     </type>
+
+    <type name="Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import\ConsumerEventInterfaceFactory">
+        <arguments>
+            <argument name="eventTypeMap" xsi:type="array">
+                <item name="config_export_full" xsi:type="string">
+                    Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import\DefaultConsumerEvent
+                </item>
+                <item name="config_export_update" xsi:type="string">
+                    Magento\ConfigurationImportMessageBroker\Model\MessageBus\Import\DefaultConsumerEvent
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
