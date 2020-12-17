@@ -111,12 +111,12 @@ class RestClient
     }
 
     /**
-     * For Monolithic installation return default url from phpunit_rest.xml const if present of return "localhost"
+     * For Monolithic installation only for tests WebAPI/Integration tests
      *
      * @return string
      */
     private function resolveDefaultMagentoUrl()
     {
-        return defined('TESTS_BASE_URL') ? TESTS_BASE_URL : 'localhost';
+        return '127.0.0.1';
     }
 }
