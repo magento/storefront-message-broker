@@ -5,6 +5,7 @@
  */
 namespace Magento\MessageBroker\Stub\Amqp\ResourceModel;
 
+use Magento\Framework\App\ObjectManager;
 use \Magento\Framework\MessageQueue\Lock\ReaderInterface;
 use \Magento\Framework\MessageQueue\Lock\WriterInterface;
 
@@ -17,11 +18,20 @@ class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\Abstrac
     WriterInterface
 {
     /**
+     * Class in Magento monolith for instantiation for case with monolithic installation
+     */
+    private const MONOLITH_CLASS = '\Magento' . '\MessageQueue\Model\ResourceModel\Lock';
+
+    /**
+     * @var bool
+     */
+    private $isMonolithicInstallation;
+
+    /**
      * @inheritDoc
      */
     protected function _construct()
     {
-        //Stub cont
     }
 
     /**
@@ -29,7 +39,9 @@ class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\Abstrac
      */
     public function read(\Magento\Framework\MessageQueue\LockInterface $lock, $code)
     {
-        //Stub content
+        if ($this->isMonolithicInstallation()) {
+            return ObjectManager::getInstance()->get(self::MONOLITH_CLASS)->read($lock, $code);
+        }
     }
 
     /**
@@ -37,7 +49,9 @@ class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\Abstrac
      */
     public function saveLock(\Magento\Framework\MessageQueue\LockInterface $lock)
     {
-        //Stub content
+        if ($this->isMonolithicInstallation()) {
+            return ObjectManager::getInstance()->get(self::MONOLITH_CLASS)->saveLock($lock);
+        }
     }
 
     /**
@@ -45,6 +59,24 @@ class MessageQueueLock extends \Magento\Framework\Model\ResourceModel\Db\Abstrac
      */
     public function releaseOutdatedLocks()
     {
-        //Stub content
+        if ($this->isMonolithicInstallation()) {
+            return ObjectManager::getInstance()->get(self::MONOLITH_CLASS)->releaseOutdatedLocks();
+        }
+    }
+
+
+    /**
+     * Ad-hoc solution for monolithic installation, used to run tests on CI.
+     * No actual dependency for standalone installation
+     *
+     * @return bool
+     */
+    private function isMonolithicInstallation(): bool
+    {
+        if ($this->isMonolithicInstallation === null) {
+            $this->isMonolithicInstallation = \class_exists('\Magento' . '\Config\Model\Config');
+        }
+
+        return $this->isMonolithicInstallation;
     }
 }
