@@ -16,7 +16,10 @@
     "colinmollenhour/cache-backend-redis": "^1.14",
     "colinmollenhour/credis": "1.11.1",
     "magento/module-amqp": "*",
-    "magento/module-message-queue": "*"
+    "magento/module-message-queue": "*",
+    "google/protobuf": "^3.11",
+    "grpc/grpc": "^1.27",
+    "spiral/php-grpc": "^1.1"
   },
   "autoload": {
     "psr-4": {
