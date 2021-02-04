@@ -147,7 +147,6 @@
                 <item name="persistor" xsi:type="string">\Magento\Framework\ObjectManager\Code\Generator\Persistor</item>
                 <item name="repository" xsi:type="string">\Magento\Framework\ObjectManager\Code\Generator\Repository</item>
                 <item name="convertor" xsi:type="string">\Magento\Framework\ObjectManager\Code\Generator\Converter</item>
-                <item name="searchResults" xsi:type="string">\Magento\Framework\Api\Code\Generator\SearchResults</item>
                 <item name="extensionInterface" xsi:type="string">\Magento\Framework\Api\Code\Generator\ExtensionAttributesInterfaceGenerator</item>
                 <item name="extension" xsi:type="string">\Magento\Framework\Api\Code\Generator\ExtensionAttributesGenerator</item>
                 <item name="remote" xsi:type="string">\Magento\Framework\MessageQueue\Code\Generator\RemoteServiceGenerator</item>
