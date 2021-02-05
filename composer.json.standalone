@@ -17,6 +17,7 @@
     "colinmollenhour/credis": "1.11.1",
     "magento/module-amqp": "*",
     "magento/module-message-queue": "*",
+    "magento/module-storefront-cache": "*",
     "google/protobuf": "^3.11",
     "grpc/grpc": "^1.27",
     "spiral/php-grpc": "^1.1"

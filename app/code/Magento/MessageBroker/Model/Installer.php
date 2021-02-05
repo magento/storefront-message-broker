@@ -100,7 +100,6 @@ class Installer
         $config = [
             'app_env' => [
                 self::SERVICE_COMMUNICATION_CONNECTION_TYPE => $parameters[self::GRPC_CONNECTON_TYPE],
-                'cache_types' => $this->getCacheTypes(),
                 'queue' => [
                     'consumers_wait_for_messages' => $parameters[self::CONSUMER_WAIT_FOR_MESSAGES],
                     'amqp' => [
