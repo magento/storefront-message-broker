@@ -111,12 +111,11 @@ class RestClient
     }
 
     /**
-     * For Monolithic installation only for tests WebAPI/Integration tests
-     *
+     * Add hoc for Monolithic installation: return "MONOLITH_BACK_URL" from phpunit_*.xml if present or "127.0.0.1"
      * @return string
      */
     private function resolveDefaultMagentoUrl()
     {
-        return '127.0.0.1';
+        return defined('MONOLITH_BACK_URL') ? MONOLITH_BACK_URL : '127.0.0.1';
     }
 }
