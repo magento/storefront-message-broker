@@ -16,7 +16,9 @@
     "magento/module-storefront-cache": "*",
     "magento/module-storefront-di": "*",
     "magento/module-storefront-deploy": "*",
-    "magento/module-grpc": "dev-main",
+    "google/protobuf": "^3.11",
+    "grpc/grpc": "^1.27",
+    "spiral/php-grpc": "^1.1",
     "magento/module-amqp": "*",
     "magento/module-message-queue": "*"
   },
