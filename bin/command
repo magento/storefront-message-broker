@@ -6,33 +6,22 @@
  */
 
 if (PHP_SAPI !== 'cli') {
-    echo 'bin/magento must be run as a CLI application';
+    echo 'bin/command must be run as a CLI application';
     exit(1);
 }
 
 try {
     require __DIR__ . '/../app/message_broker_bootstrap.php';
-} catch (\Throwable $e) {
+} catch (\Exception $e) {
     echo 'Autoload error: ' . $e->getMessage();
     exit(1);
 }
 try {
-    $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
-    $om = $bootstrap->getObjectManager();
-    /** @var \Magento\Framework\Console\CommandListInterface $commandsList */
-    $commandsList = $om->get(\Magento\Framework\Console\CommandListInterface::class);
-    $commands = $commandsList->getCommands();
-
-    foreach (\Magento\Framework\Console\CommandLocator::getCommands() as $commandListClass) {
-        /** @var \Magento\Framework\Console\CommandListInterface $commandListCustom */
-        $commandListCustom = $om->get($commandListClass);
-        $commands += $commandListCustom->getCommands();
-    }
-
-    $application = new \Symfony\Component\Console\Application('Magento CLI');
-    $application->addCommands($commands);
+    $handler = new \Magento\Framework\App\ErrorHandler();
+    set_error_handler([$handler, 'handler']);
+    $application = new \Magento\StorefrontFramework\Framework\Console\Cli('Magento CLI');
     $application->run();
-} catch (\Throwable $e) {
+} catch (\Exception $e) {
     while ($e) {
         echo $e->getMessage();
         echo $e->getTraceAsString();
