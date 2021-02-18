@@ -73,19 +73,6 @@ class Installer
     }
 
     /**
-     * Prepare cache list
-     *
-     * @return array
-     */
-    private function getCacheTypes(): array
-    {
-        return [
-            'config' => 1,
-            'compiled_config' => 1
-        ];
-    }
-
-    /**
      * Create env.php file configuration
      *
      * @param array $parameters
