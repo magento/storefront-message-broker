@@ -44,5 +44,4 @@ See detailed [checklist](https://github.com/magento/storefront-message-broker/bl
 - [ ] Class usage: magento/storefront-message-broker repo don't use directly classes from magento/saas-export repo and vise-verse
   - Check composer.json dependencies
 - [ ] Legacy code is deleted
-
-
+- [ ] README.md files for modified modules are updated and included in the pull request if any [README.md predefined sections](https://github.com/magento/devdocs/wiki/Magento-module-README.md) require an update
