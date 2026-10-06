@@ -1,3 +1,9 @@
+## ⚠️ Archived — No Longer Maintained
+
+This repository is no longer maintained and has been archived. Please use [magento/magento2](https://github.com/magento/magento2) instead.
+
+---
+
 # Overview
 Message Broker application is a mediator between Catalog StoreFront Application and Magento Backoffice.
 
